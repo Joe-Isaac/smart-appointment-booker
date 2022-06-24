@@ -1,0 +1,71 @@
+.myCard{
+    border-top: 1px;
+    border-bottom: 0;
+    border-left: 1px;
+    border-right: 1px;
+    border-style: solid;
+    border-color: #f3f3f3;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 8px;
+    align-items: center;
+    padding-left: 3px;
+}
+
+.numbers{
+    border: 0.6px;
+    border-style: solid;
+    border-color: red;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 4px;
+}
+
+.numbers1{
+    border: 0.6px;
+    border-style: solid;
+    border-color: blue;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 4px;
+}
+
+.numbers3{
+    border: 0.6px;
+    border-style: solid;
+    border-color: greenyellow;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 4px;
+}
+
+.numbers4{
+    border: 0.6px;
+    border-style: solid;
+    border-color: orange;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 4px;
+}
+
+.container{
+    min-width: 800px;
+    margin-top: 0;
+}
+
+.contain{
+    margin-top: 0;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.mycards{
+    border-radius: 8px;
+    box-shadow: inset;
+}
+
+.smallCards{
+    display: flex;
+    justify-content: flex-end;
+}
