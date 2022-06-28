@@ -1,50 +1,13 @@
 import React from 'react';
 import {useState} from 'react';
-import {Table, Button, Input, Modal, Card} from 'antd';
+import {Table, Button, Input, Modal, Card, Spin} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import useFetch from '../useFetch';
 
 const Appointment = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [editing, setEditing] = useState(null);
-    const [dataSource, setDataSource] = useState([
-      {
-        id:9,
-        name: 'Ptolemy',
-        gender: 'male',
-        email: 'lems@gmail.com',
-        department: 'Consultation',
-        appointmentDate: '2022-05-19',
-        doctor: 'tba',
-        status: 'Pending',
-        typeOfAppointment: 'Consultation',
-        room: 'A32',
-      },
-      {
-        id:10,
-        name: 'Bree',
-        gender: 'female',
-        email: 'breezy@gmail.com',
-        department: 'Urology',
-        doctor: 'Dr. Dre',
-        appointmentDate: '2022-05-19',
-        status: 'Pending',
-        typeOfAppointment: 'minor-surgery',
-        room: 'A01',
-      },
-      {
-        id:11,
-        name: 'Roise',
-        gender: 'male',
-        email: 'roise@gmail.com',
-        department: 'audiology',
-        doctor: 'Dr. Wajackoya',
-        appointmentDate: '2022-05-19',
-        status: 'Pending',
-        typeOfAppointment: 'Consultation',
-        room: 'A05',
-      },
-  ])
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
@@ -56,7 +19,7 @@ const Appointment = () => {
       address: randomVariable + "Address"
     }
     //This is how we add something to the bottom of the list in arrays.
-    setDataSource(prev => {
+    setData(prev => {
       return [...prev, newUser];
     })
   }
@@ -72,7 +35,7 @@ const Appointment = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        return setDataSource(pre=> {
+        return setData(pre=> {
           return pre.filter((user) => user.id !== record.id);
         })
       }
@@ -148,6 +111,8 @@ const Appointment = () => {
       </>
     }}
   ];
+
+    const {setData, data, isPending} = useFetch('http://localhost:8000/appointments')
   return(
       <>
       <Modal
@@ -155,7 +120,7 @@ const Appointment = () => {
             title={"Edit user"}
             onOk={
               () => {
-                setDataSource(pre => {
+                setData(pre => {
                     return pre.map(user => {
                       if(user.id === editing.id){
                         return editing;
@@ -205,12 +170,13 @@ const Appointment = () => {
                 }/>
             </Modal>
             <div style={{border: '1px', borderStyle: 'solid', borderColor: '#f3f3f3', width: 'fit-content', padding: '4px', backgroundColor: '#1890ff'}}><Link style={{color:'white', fontFamily: 'calibri', fontWeight:30, fontSize: 16}} to='/Booking'>Create new Appointment</Link></div>
-              <Table
+              {data && <Table
                 style={{color: 'purple', padding: 5,}}
                 size={'middle'}
                 columns={columns}
-                dataSource={dataSource} 
-            />
+                dataSource={data} 
+            />}
+            {isPending && <><Spin size="large"/><p>Loading...</p></>}
 
       </>
   )

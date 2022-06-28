@@ -1,11 +1,12 @@
 import { Card, Col, Row } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../assets/doctor.css';
 import { TeamOutlined, BookOutlined, GlobalOutlined, GiftOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import DemoColumn from './EmpLegend';
 import MyDonut from './MyDonut';
 
 const Doctor = () => {
+  
   return (
     <div className='container'>
       <Row className='smallCards'>

@@ -1,40 +1,15 @@
 import React from 'react'
-import {useState} from 'react';
-import {Table, Button, Input, Modal, Card} from 'antd';
+import {useState, useEffect} from 'react';
+import {Table, Button, Input, Modal, Card, Spin} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-
+import useFetch from '../useFetch';
 const DoctorRecords = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [editing, setEditing] = useState(null);
-    const [dataSource, setDataSource] = useState([
-      {
-        id:9,
-        name: 'Dr. Ptolemy Clive',
-        gender: 'male',
-        email: 'lems@gmail.com',
-        specialty: 'Dentist',
-        address: '4th street, Nairobi'
-      },
-      {
-        id:10,
-        name: 'Dr. Quincy Omash',
-        gender: 'female',
-        email: 'breezy@gmail.com',
-        specialty: 'Physician',
-        address: 'Crow drive, Kahawa'
-      },
-      {
-        id:11,
-        name: 'Dr. Roise Clement',
-        gender: 'male',
-        email: 'roise@gmail.com',
-        specialty: 'Gyenecologist',
-        address: '2nd street, Kiambu'
-      },
-  ])
+    
 
-  const addUser = () => {
+    const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
     const newUser = {
       id: randomVariable,
@@ -44,7 +19,7 @@ const DoctorRecords = () => {
       address: randomVariable + "Address"
     }
     //This is how we add something to the bottom of the list in arrays.
-    setDataSource(prev => {
+    setData(prev => {
       return [...prev, newUser];
     })
   }
@@ -60,7 +35,7 @@ const DoctorRecords = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        return setDataSource(pre=> {
+        return setData(pre=> {
           return pre.filter((user) => user.id !== record.id);
         })
       }
@@ -93,29 +68,31 @@ const DoctorRecords = () => {
       title:'Address',
       dataIndex: 'address'
     },
-    // {
-    //   key: 6,
-    //   title: 'actions',
-    //   render: (record) => {
-    //   return <>
-    //   <div>
-    //   <div>
-    //   <EditOutlined onClick={() => {
-    //     //editUser(record);
-    //   }}/>
-    //   Reschedule 
-    //   </div>
-    //   <div>
-    //   <DeleteOutlined onClick={() => {
-    //     //deleteUser(record);
-    //   }
-    //   } style={{color: 'red', marginLeft:16,}}/>
-    //   Cancel appointment
-    //   </div>
-    //   </div>
-    //   </>
-    // }}
+    {
+      key: 6,
+      title: 'actions',
+      render: (record) => {
+      return <>
+      <div>
+      <div>
+      <EditOutlined onClick={() => {
+        editUser(record);
+      }}/>
+      Edit record
+      </div>
+      <div>
+      <DeleteOutlined onClick={() => {
+        deleteUser(record);
+      }
+      } style={{color: 'red', marginLeft:16,}}/>
+      Delete record
+      </div>
+      </div>
+      </>
+    }}
   ];
+
+  const {data, isPending, setData} = useFetch('http://localhost:8000/doctors');
   return(
       <>
       <Modal
@@ -123,7 +100,7 @@ const DoctorRecords = () => {
             title={"Edit user"}
             onOk={
               () => {
-                setDataSource(pre => {
+                setData(pre => {
                     return pre.map(user => {
                       if(user.id === editing.id){
                         return editing;
@@ -172,14 +149,16 @@ const DoctorRecords = () => {
                   }
                 }/>
             </Modal>
-            
-              <Table
+          
+            {
+              data && <Table
                 style={{color: 'purple', padding: 5,}}
                 size={'middle'}
                 columns={columns}
-                dataSource={dataSource} 
+                dataSource={data} 
             />
-
+            } 
+            {isPending && <div><Spin size='default'/><p>Loading...</p></div>}
       </>
   )
   

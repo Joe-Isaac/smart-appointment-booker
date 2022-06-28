@@ -1,90 +1,13 @@
 import React from 'react';
 import {useState} from 'react';
-import {Table, Button, Input, Modal} from 'antd';
+import {Table, Button, Input, Modal, Spin} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
+import useFetch from '../useFetch';
 
 const Patientrecord = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [editing, setEditing] = useState(null);
-    const [dataSource, setDataSource] = useState([
-    {
-      address: 'john Address',
-      id:1,
-      name: 'John',
-      email: 'john@gmail.com',
-      gender: 'male',
-    },
-    {
-      id:2,
-      name: 'Lynn',
-      gender: 'female',
-      email: 'Lynn@gmail.com',
-      address: 'Lynn Address'
-    },
-    {
-      id:3,
-      gender: 'female',
-      name: 'Kyra',
-      email: 'kyra@gmail.com',
-      address: 'kyra Address'
-    },
-    {
-      id:4,
-      name: 'Clay',
-      gender: 'male',
-      email: 'clay@gmail.com',
-      address: 'clay Address'
-    },
-    {
-        id:5,
-        name: 'Droosky',
-        gender: 'male',
-        email: 'dro@gmail.com',
-        address: 'dros Address'
-      },
-      {
-        id:6,
-        name: 'Harlow',
-        gender: 'male',
-        email: 'Harlow@gmail.com',
-        address: 'Harlow Address'
-      },
-      {
-        id:7,
-        name: 'Christine',
-        gender: 'female',
-        email: 'christy@gmail.com',
-        address: 'chris Address'
-      },
-      {
-        id:8,
-        name: 'Pauline',
-        gender: 'female',
-        email: 'liner@gmail.com',
-        address: 'Lines Address'
-      },
-      {
-        id:9,
-        name: 'Ptolemy',
-        gender: 'male',
-        email: 'lems@gmail.com',
-        address: 'Claudius Address'
-      },
-      {
-        id:10,
-        name: 'Bree',
-        gender: 'female',
-        email: 'breezy@gmail.com',
-        address: 'breezers Address'
-      },
-      {
-        id:11,
-        name: 'Roise',
-        gender: 'male',
-        email: 'roise@gmail.com',
-        address: 'roises Address'
-      },
-  ])
+    const {setData, data, isPending} = useFetch('http://localhost:8000/patient_records')
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
@@ -96,7 +19,7 @@ const Patientrecord = () => {
       address: randomVariable + "Address"
     }
     //This is how we add something to the bottom of the list in arrays.
-    setDataSource(prev => {
+    setData(prev => {
       return [...prev, newUser];
     })
   }
@@ -112,7 +35,7 @@ const Patientrecord = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        return setDataSource(pre=> {
+        return setData(pre=> {
           return pre.filter((user) => user.id !== record.id);
         })
       }
@@ -162,7 +85,7 @@ const Patientrecord = () => {
             title={"Edit user"}
             onOk={
               () => {
-                setDataSource(pre => {
+                setData(pre => {
                     return pre.map(user => {
                       if(user.id === editing.id){
                         return editing;
@@ -212,13 +135,15 @@ const Patientrecord = () => {
                 }/>
             </Modal>
             <Button style={{marginLeft: 20,}} onClick={addUser}>Add new user</Button>
-              <Table
+            {
+              data &&  <Table
                 style={{color: 'purple', padding: 5,}}
                 size={'middle'}
                 columns={columns}
-                dataSource={dataSource} 
+                dataSource={data} 
             />
-
+            }
+            {isPending && <><Spin size='default'/><p>Loading...</p></>}
       </>
   )
   

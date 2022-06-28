@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, Outlet } from 'react-router-dom';
 import 'antd/dist/antd.css'
 import './App.css'
 import { Layout, Menu, Breadcrumb, Button } from 'antd';
 import { EditOutlined, UserOutlined, DatabaseOutlined, NotificationOutlined, MenuUnfoldOutlined, MenuFoldOutlined, UserAddOutlined, DashboardOutlined, ScheduleOutlined, OrderedListOutlined } from '@ant-design/icons';
-
+import {faker} from '@faker-js/faker'
 //import './components/Legend';
 
 const App = () => {
-const [collapsed, setCollapsed] = useState(false);
-const navigate = useNavigate();
-const [dashHidden, sethidden] = useState(true);
-const [patientHidden, setpatientHidden] = useState(true);
-const[doctorHidden, setdoctorHidden] = useState(true);
+    const users = [];
+    const [collapsed, setCollapsed] = useState(false);
+    const navigate = useNavigate();
+    const [dashHidden, sethidden] = useState(true);
+    const [patientHidden, setpatientHidden] = useState(true);
+    const[doctorHidden, setdoctorHidden] = useState(true);
   
 const { Header, Content, Sider } = Layout;
 const items1 = ['1', '2', '3'].map((key) => ({
@@ -50,6 +51,22 @@ const items1 = ['1', '2', '3'].map((key) => ({
 
 const dashboard1 = () => { 
   return (navigate('Legend'));
+}
+
+const randomName = faker.name.findName(); // Rowan Nikolaus
+const randomEmail = faker.internet.email();
+
+
+const updateUsers = () => {
+  for (let i = 0 ; i<=10; i++){
+    users.push(
+      {"firstName": faker.name.firstName(),
+       "lastName" : faker.name.lastName(),
+       "email": faker.internet.email(),
+       "contacts": faker.phone.number(),
+    }
+    );
+  }
 }
 
   return(
@@ -120,7 +137,8 @@ const dashboard1 = () => {
             minWidth: '830px',
           }}
         >
-
+          {updateUsers()}
+          {}
             <Outlet/>
           {/**
           {!patientHidden? <Patientrecord/>: null}

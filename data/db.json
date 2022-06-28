@@ -1,0 +1,142 @@
+{
+    "doctors":[
+        {
+            "id": "1",
+            "name": "Joey Brad",
+            "gender": "male",
+            "email": "jb@example.com",
+            "specialty": "physician",
+            "address": "4th street Nairobi"
+        },
+        {
+            "id": "2",
+            "name": "Jimmy Kimmel",
+            "gender": "male",
+            "email": "jk@example.com",
+            "specialty": "surgeon",
+            "address": "3rd street Nairobi"
+        },
+        {
+            "id": "3",
+            "name": "Katie McCath",
+            "gender": "female",
+            "email": "km@example.com",
+            "specialty": "nurse",
+            "address": "2nd street Nairobi"
+        }
+    ],
+    "patient_records":[
+        {   "id": "1",
+            "name": "Salma Hayek",
+            "gender": "female",
+            "email": "Sh@example.com",
+            "address": "1st street Nairobi"
+        },
+        {   "id": "1",
+            "name": "Salman Khan",
+            "gender": "male",
+            "email": "Sk@example.com",
+            "address": "2nd street Nairobi"
+        },
+        {   "id": "3",
+            "name": "Crazy Kennar",
+            "gender": "male",
+            "email": "ck@example.com",
+            "address": "3rd street Nairobi"
+        },
+        {   "id": "4",
+            "name": "Sergio Perez",
+            "gender": "male",
+            "email": "sp@example.com",
+            "address": "4th street Nairobi"
+        },
+        {   "id": "5",
+            "name": "Kim Raikonnen",
+            "gender": "female",
+            "email": "kr@example.com",
+            "address": "5th street Nairobi"
+        },
+        {   "id": "6",
+            "name": "Margot Robbie",
+            "gender": "female",
+            "email": "mr@example.com",
+            "address": "6th street Nairobi"
+        },
+        {   "id": "7",
+            "name": "Tori Kelly",
+            "gender": "female",
+            "email": "tk@example.com",
+            "address": "7th street Nairobi"
+        }
+    ],
+    "appointments":[
+        {
+            "id":"9",
+            "name": "Ptolemy",
+            "gender": "male",
+            "email": "lems@gmail.com",
+            "department": "Consultation",
+            "appointmentDate": "2022-05-19",
+            "doctor": "tba",
+            "status": "Pending",
+            "typeOfAppointment": "Consultation",
+            "room": "A32"
+          },
+          {
+            "id":"1",
+            "name": "Bree",
+            "gender": "female",
+            "email": "breezy@gmail.com",
+            "department": "Urology",
+            "doctor": "Dr. Dre",
+            "appointmentDate": "2022-05-19",
+            "status": "Pending",
+            "typeOfAppointment": "minor-surgery",
+            "room": "A01"
+          },
+          {
+            "id":"1",
+            "name": "Roise",
+            "gender": "male",
+            "email": "roise@gmail.com",
+            "department": "audiology",
+            "doctor": "Dr. Wajackoya",
+            "appointmentDate": "2022-05-19",
+            "status": "Pending",
+            "typeOfAppointment": "Consultation",
+            "room": "A05"
+          }
+    ],
+    "room_allocation":[
+        {
+            "roomNumber": "A01",
+            "roomType": "ICU",
+            "roomStatus": "Unavailable",
+            "roomSchedule": ""
+        },
+        {
+            "roomNumber": "A02",
+            "roomType": "Dialysis Room",
+            "roomStatus": "Unavailable",
+            "roomSchedule": ""
+        },
+        {
+            "roomNumber": "A03",
+            "roomType": "Operations room",
+            "roomStatus": "Unavailable",
+            "roomSchedule": ""
+        },
+        {
+            "roomNumber": "A04",
+            "roomType": "CCU",
+            "roomStatus": "Unavailable",
+            "roomSchedule": ""
+        },
+        {
+            "roomNumber": "A05",
+            "roomType": "ICU",
+            "roomStatus": "Unavailable",
+            "roomSchedule": ""
+        }
+    ]
+}

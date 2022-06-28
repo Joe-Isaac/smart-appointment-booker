@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {Table} from 'antd';
+import {Spin, Table} from 'antd';
+import useFetch from '../useFetch';
+
 const RoomAllocation = () => {
     const columns=[{
         key: 1,
@@ -22,44 +24,18 @@ const RoomAllocation = () => {
         dataIndex: 'roomSchedule',
     },];
 
-const [dataSource, setDataSource] = useState([
-    {
-        roomNumber: 'A01',
-        roomType: 'ICU',
-        roomStatus: 'Unavailable',
-        roomSchedule: '',
-    },
-    {
-        roomNumber: 'A02',
-        roomType: 'Dialysis Room',
-        roomStatus: 'Unavailable',
-        roomSchedule: '',
-    },
-    {
-        roomNumber: 'A03',
-        roomType: 'Operations room',
-        roomStatus: 'Unavailable',
-        roomSchedule: '',
-    },
-    {
-        roomNumber: 'A04',
-        roomType: 'CCU',
-        roomStatus: 'Unavailable',
-        roomSchedule: '',
-    },
-    {
-        roomNumber: 'A05',
-        roomType: 'ICU',
-        roomStatus: 'Unavailable',
-        roomSchedule: '',
-    },
-])
+    const {setData, data, isPending} = useFetch('http://localhost:8000/room_allocation')
+
   return (
     <div>
-        <Table
+        {data && <Table
         columns={columns}
-        dataSource={dataSource}
+        dataSource={data}
         />
+        }
+        {
+            isPending && <><Spin size='default'/><p>Loading...</p></>
+        }
     </div>
   )
 };
