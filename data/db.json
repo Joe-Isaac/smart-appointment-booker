@@ -1,142 +1,201 @@
 {
-    "doctors":[
-        {
-            "id": "1",
-            "name": "Joey Brad",
-            "gender": "male",
-            "email": "jb@example.com",
-            "specialty": "physician",
-            "address": "4th street Nairobi"
-        },
-        {
-            "id": "2",
-            "name": "Jimmy Kimmel",
-            "gender": "male",
-            "email": "jk@example.com",
-            "specialty": "surgeon",
-            "address": "3rd street Nairobi"
-        },
-        {
-            "id": "3",
-            "name": "Katie McCath",
-            "gender": "female",
-            "email": "km@example.com",
-            "specialty": "nurse",
-            "address": "2nd street Nairobi"
-        }
-    ],
-    "patient_records":[
-        {   "id": "1",
-            "name": "Salma Hayek",
-            "gender": "female",
-            "email": "Sh@example.com",
-            "address": "1st street Nairobi"
-        },
-        {   "id": "1",
-            "name": "Salman Khan",
-            "gender": "male",
-            "email": "Sk@example.com",
-            "address": "2nd street Nairobi"
-        },
-        {   "id": "3",
-            "name": "Crazy Kennar",
-            "gender": "male",
-            "email": "ck@example.com",
-            "address": "3rd street Nairobi"
-        },
-        {   "id": "4",
-            "name": "Sergio Perez",
-            "gender": "male",
-            "email": "sp@example.com",
-            "address": "4th street Nairobi"
-        },
-        {   "id": "5",
-            "name": "Kim Raikonnen",
-            "gender": "female",
-            "email": "kr@example.com",
-            "address": "5th street Nairobi"
-        },
-        {   "id": "6",
-            "name": "Margot Robbie",
-            "gender": "female",
-            "email": "mr@example.com",
-            "address": "6th street Nairobi"
-        },
-        {   "id": "7",
-            "name": "Tori Kelly",
-            "gender": "female",
-            "email": "tk@example.com",
-            "address": "7th street Nairobi"
-        }
-    ],
-    "appointments":[
-        {
-            "id":"9",
-            "name": "Ptolemy",
-            "gender": "male",
-            "email": "lems@gmail.com",
-            "department": "Consultation",
-            "appointmentDate": "2022-05-19",
-            "doctor": "tba",
-            "status": "Pending",
-            "typeOfAppointment": "Consultation",
-            "room": "A32"
-          },
-          {
-            "id":"1",
-            "name": "Bree",
-            "gender": "female",
-            "email": "breezy@gmail.com",
-            "department": "Urology",
-            "doctor": "Dr. Dre",
-            "appointmentDate": "2022-05-19",
-            "status": "Pending",
-            "typeOfAppointment": "minor-surgery",
-            "room": "A01"
-          },
-          {
-            "id":"1",
-            "name": "Roise",
-            "gender": "male",
-            "email": "roise@gmail.com",
-            "department": "audiology",
-            "doctor": "Dr. Wajackoya",
-            "appointmentDate": "2022-05-19",
-            "status": "Pending",
-            "typeOfAppointment": "Consultation",
-            "room": "A05"
-          }
-    ],
-    "room_allocation":[
-        {
-            "roomNumber": "A01",
-            "roomType": "ICU",
-            "roomStatus": "Unavailable",
-            "roomSchedule": ""
-        },
-        {
-            "roomNumber": "A02",
-            "roomType": "Dialysis Room",
-            "roomStatus": "Unavailable",
-            "roomSchedule": ""
-        },
-        {
-            "roomNumber": "A03",
-            "roomType": "Operations room",
-            "roomStatus": "Unavailable",
-            "roomSchedule": ""
-        },
-        {
-            "roomNumber": "A04",
-            "roomType": "CCU",
-            "roomStatus": "Unavailable",
-            "roomSchedule": ""
-        },
-        {
-            "roomNumber": "A05",
-            "roomType": "ICU",
-            "roomStatus": "Unavailable",
-            "roomSchedule": ""
-        }
-    ]
+  "doctors": [
+    {
+      "id": "1",
+      "name": "Joey Brad",
+      "gender": "male",
+      "email": "jb@example.com",
+      "specialty": "physician",
+      "address": "4th street Nairobi",
+      "available": []
+    },
+    {
+      "id": "2",
+      "name": "Jimmy Kimmel",
+      "gender": "male",
+      "email": "jk@example.com",
+      "specialty": "surgeon",
+      "address": "3rd street Nairobi",
+      "available": []
+    },
+    {
+      "id": "3",
+      "name": "Katie McCath",
+      "gender": "female",
+      "email": "km@example.com",
+      "specialty": "nurse",
+      "address": "2nd street Nairobi",
+      "available": []
+    }
+  ],
+  "patient_records": [
+    {
+      "id": "1",
+      "name": "Salma Hayek",
+      "gender": "female",
+      "email": "Sh@example.com",
+      "address": "1st street Nairobi"
+    },
+    {
+      "id": "1",
+      "name": "Salman Khan",
+      "gender": "male",
+      "email": "Sk@example.com",
+      "address": "2nd street Nairobi"
+    },
+    {
+      "id": "3",
+      "name": "Crazy Kennar",
+      "gender": "male",
+      "email": "ck@example.com",
+      "address": "3rd street Nairobi"
+    },
+    {
+      "id": "4",
+      "name": "Sergio Perez",
+      "gender": "male",
+      "email": "sp@example.com",
+      "address": "4th street Nairobi"
+    },
+    {
+      "id": "5",
+      "name": "Kim Raikonnen",
+      "gender": "female",
+      "email": "kr@example.com",
+      "address": "5th street Nairobi"
+    },
+    {
+      "id": "6",
+      "name": "Margot Robbie",
+      "gender": "female",
+      "email": "mr@example.com",
+      "address": "6th street Nairobi"
+    },
+    {
+      "id": "7",
+      "name": "Tori Kelly",
+      "gender": "female",
+      "email": "tk@example.com",
+      "address": "7th street Nairobi"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "9",
+      "name": "Ptolemy",
+      "phoneNumber": "5454545",
+      "department": "Consultation",
+      "appointmentDate": "2022-05-19",
+      "doctor": "tba",
+      "status": "Pending",
+      "clinic": "outpatient",
+      "room": "A32"
+    },
+    {
+      "id": "1",
+      "name": "Bree",
+      "phoneNumber": "323234",
+      "department": "Urology",
+      "doctor": "Dr. Dre",
+      "appointmentDate": "2022-05-19",
+      "status": "Pending",
+      "clinic": "inpatient",
+      "room": "A01"
+    },
+    {
+      "id": "2",
+      "name": "Roise",
+      "phoneNumber": "0121212",
+      "department": "audiology",
+      "doctor": "Dr. Wajackoya",
+      "appointmentDate": "2022-05-19",
+      "status": "Pending",
+      "clinic": "outpatient",
+      "room": "A05"
+    },
+    {
+      "name": "Joe",
+      "second-name": "ewe",
+      "third-name": "Gahts",
+      "age": "24",
+      "department": "onchology",
+      "doctor": "Carrick",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-06-27T21:00:00.567Z",
+      "room": "A02",
+      "phoneNumber": "4545455",
+      "id": "UGB7ypT"
+    },
+    {
+      "name": "Dundaing",
+      "second-name": "ewe",
+      "third-name": "Gahts",
+      "age": "34",
+      "department": "general-ward",
+      "doctor": "Priest",
+      "clinic": "outpatient",
+      "appointmentDate": "2022-06-27T21:00:00.567Z",
+      "room": "A02",
+      "phoneNumber": "4545455",
+      "id": "UGB7ypT"
+    },
+    {
+      "name": "dudu",
+      "second-name": "d",
+      "third-name": "d",
+      "age": "56",
+      "phoneNumber": "666666666",
+      "department": "onchology",
+      "doctor": "dave",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-06-28T21:00:00.585Z",
+      "room": "A04",
+      "id": "fIOgg2H"
+    },
+    {
+      "name": "Abdul",
+      "second-name": "a",
+      "third-name": "dk",
+      "age": "23",
+      "phoneNumber": "443433232",
+      "department": "urology",
+      "doctor": "Clark",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-06-13T21:00:00.247Z",
+      "room": "A02",
+      "id": "sEGv9p-"
+    }
+  ],
+  "room_allocation": [
+    {
+      "roomNumber": "A01",
+      "roomType": "ICU",
+      "roomStatus": "Unavailable",
+      "roomSchedule": ""
+    },
+    {
+      "roomNumber": "A02",
+      "roomType": "Dialysis Room",
+      "roomStatus": "Unavailable",
+      "roomSchedule": ""
+    },
+    {
+      "roomNumber": "A03",
+      "roomType": "Operations room",
+      "roomStatus": "Unavailable",
+      "roomSchedule": ""
+    },
+    {
+      "roomNumber": "A04",
+      "roomType": "CCU",
+      "roomStatus": "Unavailable",
+      "roomSchedule": ""
+    },
+    {
+      "roomNumber": "A05",
+      "roomType": "ICU",
+      "roomStatus": "Unavailable",
+      "roomSchedule": ""
+    }
+  ]
 }

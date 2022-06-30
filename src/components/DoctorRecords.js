@@ -1,6 +1,6 @@
 import React from 'react'
 import {useState, useEffect} from 'react';
-import {Table, Button, Input, Modal, Card, Spin} from 'antd';
+import {Table, Button, Input, Modal, Card, Spin, Tree} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import useFetch from '../useFetch';
@@ -69,7 +69,12 @@ const DoctorRecords = () => {
       dataIndex: 'address'
     },
     {
-      key: 6,
+      key:6,
+      title:'Available',
+      dataIndex: 'available'
+    },
+    {
+      key: 7,
       title: 'actions',
       render: (record) => {
       return <>
@@ -93,6 +98,7 @@ const DoctorRecords = () => {
   ];
 
   const {data, isPending, setData} = useFetch('http://localhost:8000/doctors');
+
   return(
       <>
       <Modal
@@ -157,8 +163,10 @@ const DoctorRecords = () => {
                 columns={columns}
                 dataSource={data} 
             />
-            } 
-            {isPending && <div><Spin size='default'/><p>Loading...</p></div>}
+            }
+            {isPending && <div><Spin size='default'/><p style={{fontSize: '20px'}}>Loading...</p></div>}
+            {console.log(data, 'shows me the data')}
+            
       </>
   )
   

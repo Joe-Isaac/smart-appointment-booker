@@ -17,24 +17,44 @@ const SpecBooking = () => {
             },
         ],
     };
+    fetch('http://localhost:8000/doctors')
+         .then(res => res.json)
+         .then(unavailable => {
+            console.log("some data was fetched here successfully")
+        })
+        .catch(err => console.log("error ", err))
+
     const disabledDatedd = (current) => {
-        return current.date() === 23||current.date() === 24||current.date() === 27;
+        console.log(current.endOf('month'))
         };
     const onSelect = (date) => {
         setNewDate = date;
     }
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState(null);
     
   return (
     <div style={{display: 'flex', justifyContent: 'center',}}>
         <Card hoverable style={{width: 550}}>
-        <Form layout='vertical' onFinish={(values) => {
-                setFormData(values);
-                console.log('This is where I collect the data', values);
-                console.log('This is the value of the values stored in the state variable', formData)
+        <Form layout='vertical' onFinish={(data) => {
+            <Alert message="Successfully submitted"/>
+            console.log('This is where I collect the data', data);
+            fetch("http://localhost:8000/appointments", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+        })
+        .then(response => response.json)
+        .then(results => {
+            console.log("success", results);
+            
+    })
+        .catch(error => console.log("Error ", error.message))
         }}>
+            {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="first-name" label="first name" {...config}><Input/></Form.Item>
+            <Form.Item name="name" label="first name" {...config}><Input/></Form.Item>
             <Form.Item name="second-name" label="second name" {...config}><Input/></Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
@@ -42,7 +62,7 @@ const SpecBooking = () => {
             <Form.Item name="age" label="age" {...config}><Input/></Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="phone-number" label="Phone number" {...config}><Input/></Form.Item>
+            <Form.Item name="phoneNumber" label="Phone number" {...config}><Input/></Form.Item>
             <Form.Item name="department" label="Department" {...config} style={{width: 185}}>
                 <Select value={type} onChange={setType} defaultValue={"general ward"}>
                 <Option value={'general-ward'}>General Ward</Option>
@@ -61,7 +81,7 @@ const SpecBooking = () => {
                 </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name='AppointmentDate' label="Date of appointment" {...config}>
+            <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
                 <DatePicker allowClear={true} showTime={{
                 defaultValue: moment('00:00:00', 'HH:mm:ss'),
                 }} format="YYYY-MM-DD HH:mm:ss" disabledDate={disabledDatedd}/>
@@ -74,7 +94,7 @@ const SpecBooking = () => {
                 </Select>
                 </Form.Item>
             </Row>
-            <Form.Item><Button type='primary' htmlType="submit">Book appointment</Button></Form.Item>
+            <Form.Item><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
             <div style={{fontFamily: 'calibri', fontSize: '15px', color: '#1890ff'}}><p><strong>tip: greyed out dates indicate full appointment slots</strong></p></div>
         </Form>
         </Card>

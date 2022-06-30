@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Table, Button, Input, Modal, Card, Spin} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -50,13 +50,13 @@ const Appointment = () => {
     },
     {
       key:2,
-      title:'gender',
-      dataIndex: 'gender'
+      title:'age',
+      dataIndex: 'age'
     },
     {
       key:3,
-      title:'email',
-      dataIndex: 'email'
+      title:'phone-number',
+      dataIndex: 'phoneNumber'
     },
     {
       key: 4,
@@ -80,8 +80,8 @@ const Appointment = () => {
     },
     {
       key:8,
-      title:'Type of Appointment',
-      dataIndex: 'typeOfAppointment',
+      title:'clinic',
+      dataIndex: 'clinic',
     },
     {
       key:9,
@@ -111,8 +111,11 @@ const Appointment = () => {
       </>
     }}
   ];
-
-    const {setData, data, isPending} = useFetch('http://localhost:8000/appointments')
+  const {setData, data, isPending} = useFetch('http://localhost:8000/appointments');
+    useEffect(() => {
+      console.log("The records appear to have changed since the last time")
+    }, ['http://localhost:8000/appointments'])
+    
   return(
       <>
       <Modal
