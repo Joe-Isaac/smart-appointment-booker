@@ -2,13 +2,16 @@ import React, {useState} from 'react';
 import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
+import useFetch from '../useFetch';
 
 const SpecBooking = () => {
     const {Option} = Select;
     const [type, setType] = useState('general-ward');
     const [typeTwo, setTypeTwo] = useState("outpatient");
     const [room, setRoom] = useState("Select room");
-    const [newDate, setNewDate] = useState('')
+    const [newDate, setNewDate] = useState([]);
+    const [docName, setdocName] = useState('');
+    const [docDate, setDocDate] = useState('');
     const config = {
         rules: [
             {
@@ -17,18 +20,29 @@ const SpecBooking = () => {
             },
         ],
     };
-    fetch('http://localhost:8000/doctors')
-         .then(res => res.json)
-         .then(unavailable => {
-            console.log("some data was fetched here successfully")
-        })
-        .catch(err => console.log("error ", err))
-
+    // fetch('http://localhost:8000/doctors')
+    //      .then(res => res.json)
+    //      .then(data => {
+    //         console.log("some data was fetched here successfully", data);
+    //     })
+    //     .catch(err => console.log("error ", err))
+    const {data, isPending, setData} = useFetch("http://localhost:8000/doctors");
+    function makeDate(data){
+        for(let i=0;i<data.length;i++){
+            setDocDate(data[i].unavailable);
+        }
+    }
     const disabledDatedd = (current) => {
-        console.log(current.endOf('month'))
+        makeDate(data);
+        for(let i=0; i<docDate.length; i++){
+        if(current < moment() || moment(current).format("YYYY-MM-DD") == docDate[i]){
+            console.log(moment(docDate));
+            console.log(current)
+            return current;
+        }}
         };
-    const onSelect = (date) => {
-        setNewDate = date;
+
+    const onSelect = (data) => {
     }
     const [formData, setFormData] = useState(null);
     
@@ -72,7 +86,17 @@ const SpecBooking = () => {
                 </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="doctor" label="Doctor" {...config}><Input/></Form.Item>
+            <Form.Item name="doctor" label="Doctor" {...config}>
+                <Select value={docName} onChange={setdocName} defaultValue={"select doctor to see"}>
+                    <Option value={'quincy'}>Dr. Quincy</Option>
+                    <Option value={'mildred'}>Dr. Mildred</Option>
+                    <Option value={'fanon'}>Dr. Fanon</Option>
+                    <Option value={'ricky'}>Dr. Ricky</Option>
+                    <Option value={'luna'}>Dr. Luna</Option>
+                    <Option value={'price'}>Dr. Price</Option>
+                    <Option value={'may'}>Dr. May</Option>
+                </Select>
+            </Form.Item>
             <Form.Item name="clinic" label="Clinic" {...config} style={{width: 185}}>
                 <Select value={typeTwo} onChange={setTypeTwo} defaultValue={"outpatient"}>
                     <Option value={"inpatient"}>Inpatient</Option>
@@ -98,6 +122,7 @@ const SpecBooking = () => {
             <div style={{fontFamily: 'calibri', fontSize: '15px', color: '#1890ff'}}><p><strong>tip: greyed out dates indicate full appointment slots</strong></p></div>
         </Form>
         </Card>
+        
 
     </div>
   )

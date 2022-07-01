@@ -7,7 +7,13 @@
       "email": "jb@example.com",
       "specialty": "physician",
       "address": "4th street Nairobi",
-      "available": []
+      "unavailable": [
+        "2022-07-03",
+        "2022-07-06",
+        "2022-07-09",
+        "2022-07-12",
+        "2022-07-28"
+      ]
     },
     {
       "id": "2",
@@ -16,7 +22,11 @@
       "email": "jk@example.com",
       "specialty": "surgeon",
       "address": "3rd street Nairobi",
-      "available": []
+      "unavailable": [
+        "2022-07-03",
+        "2022-07-06",
+        "2022-07-09"
+      ]
     },
     {
       "id": "3",
@@ -25,7 +35,11 @@
       "email": "km@example.com",
       "specialty": "nurse",
       "address": "2nd street Nairobi",
-      "available": []
+      "unavailable": [
+        "2022-07-03",
+        "2022-07-06",
+        "2022-07-09"
+      ]
     }
   ],
   "patient_records": [
@@ -164,6 +178,19 @@
       "appointmentDate": "2022-06-13T21:00:00.247Z",
       "room": "A02",
       "id": "sEGv9p-"
+    },
+    {
+      "name": "n jnui",
+      "second-name": "kkomk",
+      "third-name": "kik",
+      "age": "ojokik",
+      "phoneNumber": "4545455",
+      "department": "urology",
+      "doctor": "mildred",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-07-13T21:00:00.621Z",
+      "room": "A02",
+      "id": "2aIQMDG"
     }
   ],
   "room_allocation": [

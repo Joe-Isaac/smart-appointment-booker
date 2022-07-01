@@ -3,6 +3,7 @@ import { Alert, DatePicker, Select, Space, TimePicker, Calendar, Card, Badge, Ti
 import { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import moment from 'moment';
+import useFetch from '../useFetch';
 
 const Schedule = () => {
     const { Option } = Select;
@@ -32,7 +33,8 @@ const Schedule = () => {
         setValue(value);
     }
     const [open, setOpen] = useState(false);
-    const [myArray, setMyArray] = useState(['2022-06-21', '2022-09-13', '2022-06-21', '2022-09-13', '2022-06-21', '2022-09-13']);
+    const [myArray, setMyArray] = useState([]);
+    const [dateValue, setdateValue] = useState([]);
 
     const onSelect = (value) => {
         let newValue = value?.format('YYYY-MM-DD');
@@ -46,7 +48,12 @@ const Schedule = () => {
         setMyArray(arr => [...arr, newValue]);
         console.log(myArray);
     }
-    
+
+    const {data, setData, isPending} = useFetch("http://localhost:8000/doctors")
+    console.log(data[0].unavailable)
+    useEffect(()=>{
+    setdateValue(data[0].unavailable)
+    }, [])
     
   return (
     <>
@@ -64,16 +71,16 @@ const Schedule = () => {
     <br/>
     <br/>
     <br/>
-    <Row style={{display: 'flex', marginLeft: 100}}>
-    <Col>
-    <Card hoverable style={{width: 450, height: 400}}>
+    <Row style={{display: 'flex'}}>
+    <Col span={18}>
+    <Card hoverable>
     <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
-    <Calendar dateCellRender={dateCellRender} fullscreen={false} onSelect={onSelect} onPanelChange={onPanelChange}/>
+    <Calendar dateCellRender={dateCellRender} fullscreen={true} onSelect={onSelect} onPanelChange={onPanelChange}/>
     </Card>
     </Col>
-    <Col style={{marginRight: 200}}>
+    <Col span={6}>
     <Timeline mode={"alternate"} style={{width: 300}}>
-        {myArray.map(item => (<Timeline.Item key={Math.random()}>{item}</Timeline.Item>))}
+        {dateValue.map(item => (<Timeline.Item key={Math.random()}>{item}</Timeline.Item>))}
     </Timeline>
     </Col>
     <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
