@@ -8,11 +8,16 @@
       "specialty": "physician",
       "address": "4th street Nairobi",
       "unavailable": [
-        "2022-07-03",
-        "2022-07-06",
+        "2022-07-05",
+        "2022-07-07",
         "2022-07-09",
         "2022-07-12",
-        "2022-07-28"
+        "2022-07-14",
+        "2022-07-15",
+        "2022-07-16",
+        "2022-07-18",
+        "2022-07-19",
+        "2022-07-21"
       ]
     },
     {
@@ -23,9 +28,15 @@
       "specialty": "surgeon",
       "address": "3rd street Nairobi",
       "unavailable": [
-        "2022-07-03",
-        "2022-07-06",
-        "2022-07-09"
+        "2022-07-08",
+        "2022-07-11",
+        "2022-07-21",
+        "2022-07-22",
+        "2022-07-23",
+        "2022-07-25",
+        "2022-07-26",
+        "2022-07-28",
+        "2022-07-29"
       ]
     },
     {
@@ -36,9 +47,13 @@
       "specialty": "nurse",
       "address": "2nd street Nairobi",
       "unavailable": [
-        "2022-07-03",
-        "2022-07-06",
-        "2022-07-09"
+        "2022-07-13",
+        "2022-07-22",
+        "2022-07-17",
+        "2022-07-10",
+        "2022-07-11",
+        "2022-07-12",
+        "2022-07-13"
       ]
     }
   ],
@@ -191,6 +206,45 @@
       "appointmentDate": "2022-07-13T21:00:00.621Z",
       "room": "A02",
       "id": "2aIQMDG"
+    },
+    {
+      "name": "Abdul",
+      "second-name": "Mohamed",
+      "third-name": "Mahmoud",
+      "age": "37",
+      "phoneNumber": "0786875437",
+      "department": "general-ward",
+      "doctor": "Jimmy Kimmel",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-07-12T13:00:00.227Z",
+      "room": "A01",
+      "id": "oD7UqeC"
+    },
+    {
+      "name": "xxxx",
+      "second-name": "xxx",
+      "third-name": "xxx",
+      "age": "xxx",
+      "phoneNumber": "xxxx",
+      "department": "general-ward",
+      "doctor": "Jimmy Kimmel",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-07-18T21:00:00.869Z",
+      "room": "A01",
+      "id": "oFNTffj"
+    },
+    {
+      "name": "xxxx",
+      "second-name": "xxx",
+      "third-name": "xxx",
+      "age": "xxx",
+      "phoneNumber": "xxxx",
+      "department": "general-ward",
+      "doctor": "Jimmy Kimmel",
+      "clinic": "inpatient",
+      "appointmentDate": "2022-07-19",
+      "room": "A01",
+      "id": "RZooYpO"
     }
   ],
   "room_allocation": [

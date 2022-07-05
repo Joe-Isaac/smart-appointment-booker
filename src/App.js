@@ -21,34 +21,6 @@ const items1 = ['1', '2', '3'].map((key) => ({
   label: `nav ${key}`,
 }));
 
-
-// const items2 = [
-//   {
-//     key: 1,
-//     label: 'Patient',
-//     children: [{
-//       subkey: "1-1",
-//       label: "patient dashboard",
-//     },
-//     {
-//       subkey: "1-2",
-//       label: "Patient details",
-//     }]
-//   },
-//   {
-//     key: 2,
-//     label: 'doctor',
-//     children: [{
-//       subkey: "2-1",
-//       label: 'doctors dashboard',
-//     },
-//     {
-//       subkey: "2-2",
-//       label: 'doctors details',
-//     }]
-//   }
-// ];
-
 const dashboard1 = () => { 
   return (navigate('Legend'));
 }
@@ -77,24 +49,6 @@ const updateUsers = () => {
     </Header>
     <Layout>
       <Sider width={220} trigger={null} collapsed={collapsed} collapsible className="site-layout-background">
-        {/* <Button onClick={() => {sethidden(false); setpatientHidden(true); setdoctorHidden(true)}} style={{
-          border: 0,
-          width: '100%',
-          marginTop: 4,
-          marginBottom: 4,
-        }}>Dashboard</Button>
-        <Button onClick={() => {sethidden(true); setpatientHidden(false); setdoctorHidden(true)}} style={{
-          border: 0,
-          width: '100%',
-          marginTop: 4,
-          marginBottom: 4,
-        }}>Patient details</Button>
-        <Button onClick={() => {sethidden(true); setpatientHidden(true); setdoctorHidden(false)}} style={{
-          border: 0,
-          width: '100%',
-          marginTop: 4,
-          marginBottom: 4,
-        }}>Doctor's dashboard</Button> */}
         <Menu mode='inline'>
           <Menu.Item><DashboardOutlined style={{marginRight: '3px'}}/><Link to='/Dashboard'>Main Dashboard</Link></Menu.Item>
           <Menu.Item><UserOutlined style={{marginRight: '3px'}}/><Link to='/Patient__record'>Patient Details</Link></Menu.Item>

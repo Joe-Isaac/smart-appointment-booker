@@ -7,89 +7,84 @@ import useFetch from '../useFetch';
 
 const Schedule = () => {
     const { Option } = Select;
-    const PickerWithType = ({ type, onChange }) => {
-        if (type === 'time') return <TimePicker use12Hours format={format} onChange={onChange} />;
-        return <DatePicker picker={type} onChange={onChange} />;
-      };
     const [type, setType] = useState('time');
+    const [rawData, setRawData] = useState();
+    const [timelineVisibility, setTimelineVisibility] = useState(false);
     
-    const format = 'HH:mm';
 
     const dateCellRender = (value) => {
-        let num = value.date();
-        if(num === '') {
-            var listdata = [
-                {type: "warning", content: "This is a warning"},
-            ];
-            return <Badge status={num} text={listdata.content}/>
-        }
+      for(let i=0; i<rawData.length; i++){
+        console.log("I shall pain the calendar with all the days of the appointments here")
+      if(moment(value).format("YYYY-MM-DD") == moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
+        console.log("Now Im about to print out the dates that have appointments")
+        return (
+          <ul style={{margin: 0, listStyle: 'none', padding: 5}}>
+            <li>
+              <Badge status={"success"} text={"click to see appointments"}/>
+            </li>
+          </ul>
+        )
+      }
+    }
+  }
 
-        return listdata;
-    };
-
-    const [value, setValue] = useState(moment('2022-06-21', 'YYYY-MM-DD'));
+    const [myvalue, setmyvalue] = useState([]);
     const [selectedValue, setSelectedValue] = useState(moment('2022-06-20', 'YYYY-MM-DD'));
     const onPanelChange = (value) => {
-        setValue(value);
+        //setValue(value);
     }
     const [open, setOpen] = useState(false);
     const [myArray, setMyArray] = useState([]);
     const [dateValue, setdateValue] = useState([]);
 
     const onSelect = (value) => {
-        let newValue = value?.format('YYYY-MM-DD');
-        setValue(newValue);
-        setSelectedValue(value);
+        console.log("This is the value that has been selected", moment(value).format("YYYY-MM-DD"))
+        for(let i=0; i<rawData.length; i++){
+          console.log("This is the part that works right now")
+        if(moment(value).format("YYYY-MM-DD") == moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
+          console.log("Now Im about to print out the details of a patient's appointment")
+          setmyvalue(rawData[i].name);
+          setTimelineVisibility(true);
+        }
+    }}
 
-        if(value.date()===24){setOpen(true)}
-        console.log('a value has been selected boy', newValue);
-        console.log(typeof(value));
-        console.log(typeof(newValue));
-        setMyArray(arr => [...arr, newValue]);
-        console.log(myArray);
-    }
 
-    const {data, setData, isPending} = useFetch("http://localhost:8000/doctors")
-    console.log(data[0].unavailable)
     useEffect(()=>{
-    setdateValue(data[0].unavailable)
-    }, [])
+    fetch("http://localhost:8000/appointments")
+    .then(res => res.json())
+    .then(data => {
+      setRawData(data)
+    }
+  )
+}, []);
     
   return (
     <>
-    <Space>
-      <Select value={type} onChange={setType}>
-        <Option value="time">Time</Option>
-        <Option value="date">Date</Option>
-        <Option value="week">Week</Option>
-        <Option value="month">Month</Option>
-        <Option value="quarter">Quarter</Option>
-        <Option value="year">Year</Option>
-      </Select>
-      <PickerWithType type={type} onChange={(value) => console.log(value)} />
-    </Space>
     <br/>
     <br/>
     <br/>
     <Row style={{display: 'flex'}}>
+    <Col span={6}>
+      {timelineVisibility &&  <Timeline mode={"alternate"} style={{width: 300}}>
+      <Timeline.Item>{myvalue}</Timeline.Item>
+      
+    </Timeline>
+}
+    </Col>
     <Col span={18}>
     <Card hoverable>
     <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
-    <Calendar dateCellRender={dateCellRender} fullscreen={true} onSelect={onSelect} onPanelChange={onPanelChange}/>
+    {rawData && <Calendar dateCellRender={dateCellRender} fullscreen={true} onSelect={onSelect} onPanelChange={onPanelChange}/>}
     </Card>
-    </Col>
-    <Col span={6}>
-    <Timeline mode={"alternate"} style={{width: 300}}>
-        {dateValue.map(item => (<Timeline.Item key={Math.random()}>{item}</Timeline.Item>))}
-    </Timeline>
     </Col>
     <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
       <p>timeline could go here</p>
       <p>timeline could go here</p>
     </Modal>
+    {console.log(myvalue)}
     </Row>
     </>
   );
 };
 
-export default Schedule
+export default Schedule;
