@@ -14,7 +14,7 @@ const Schedule = () => {
 
     const dateCellRender = (value) => {
       for(let i=0; i<rawData.length; i++){
-        console.log("I shall pain the calendar with all the days of the appointments here")
+        console.log("I shall paint the calendar with all the days of the appointments here")
       if(moment(value).format("YYYY-MM-DD") == moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
         console.log("Now Im about to print out the dates that have appointments")
         return (
@@ -28,7 +28,9 @@ const Schedule = () => {
     }
   }
 
-    const [myvalue, setmyvalue] = useState([]);
+
+
+    let myvalue = [];
     const [selectedValue, setSelectedValue] = useState(moment('2022-06-20', 'YYYY-MM-DD'));
     const onPanelChange = (value) => {
         //setValue(value);
@@ -38,13 +40,14 @@ const Schedule = () => {
     const [dateValue, setdateValue] = useState([]);
 
     const onSelect = (value) => {
+        myvalue = [];
         console.log("This is the value that has been selected", moment(value).format("YYYY-MM-DD"))
         for(let i=0; i<rawData.length; i++){
-          console.log("This is the part that works right now")
-        if(moment(value).format("YYYY-MM-DD") == moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
-          console.log("Now Im about to print out the details of a patient's appointment")
-          setmyvalue(rawData[i].name);
+        if(moment(value).format("YYYY-MM-DD") === moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
+          console.log("Now Im about to print out the details of a patient's appointment", rawData[i])
+          myvalue.push([rawData[i].name, rawData[i].age, rawData[i].appointmentDate])
           setTimelineVisibility(true);
+          console.log("Values in the array", myvalue);
         }
     }}
 
@@ -64,18 +67,16 @@ const Schedule = () => {
     <br/>
     <br/>
     <Row style={{display: 'flex'}}>
-    <Col span={6}>
-      {timelineVisibility &&  <Timeline mode={"alternate"} style={{width: 300}}>
-      <Timeline.Item>{myvalue}</Timeline.Item>
-      
-    </Timeline>
-}
-    </Col>
     <Col span={18}>
     <Card hoverable>
     <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
     {rawData && <Calendar dateCellRender={dateCellRender} fullscreen={true} onSelect={onSelect} onPanelChange={onPanelChange}/>}
     </Card>
+    </Col>
+    <Col span={6}>
+      { timelineVisibility && <Timeline mode={"alternate"} style={{width: 300}}>
+        {myvalue.map(val => <Timeline.Item><ul style={{listStyle: "none", margin: 0, paddingRight: 5,}}><li>{val}</li></ul></Timeline.Item>)}
+      </Timeline>}
     </Col>
     <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
       <p>timeline could go here</p>
