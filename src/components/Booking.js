@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert} from 'antd';
+import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
 
 const SpecBooking = () => {
+    const [form] = Form.useForm();
     const {Option} = Select;
     const [type, setType] = useState('');
     const [typeTwo, setTypeTwo] = useState("");
@@ -41,7 +42,7 @@ const SpecBooking = () => {
             }                                            //does not show disabled dates because no doctor is selected yet
             else{                                   //execute if doctor has been selected
                 console.log("this part has executed, but check the logic further")
-                for(let i=0; i<rawData.length; i++){    //executes thrice because that's how long rawData is.
+                for(let i=0; i<rawData.length; i++){    //executes thrice because that's how long rawData is at the time this line was written.
                 if(doc == rawData[i].name){             //if the value selected matches any name in the array
                 for(let j=0; j<rawData[i].unavailable.length; j++){ //loop through the array whose first name matches the selected
                 if(current < moment() || rawData[i].unavailable[j] == moment(current).format("YYYY-MM-DD")){
@@ -84,14 +85,15 @@ const SpecBooking = () => {
         return ()=>{console.log("useEffect destroyed")};
     }, [])
 
+    const onReset = () => {
+        form.resetFields();
+        console.log('ni mimiiii');
+    };
+
     const createItems = docName.map((item)=>(<Option value={item}>{item}</Option>));
-    
-    
-  return (
-    <div style={{display: 'flex', justifyContent: 'center',}}>
-        <Card hoverable style={{width: 550}}>
-        <Form layout='vertical' onFinish={(data) => {
-            <Alert message="Successfully submitted"/>
+    const onFinish = (data) => {
+            message.info('Successfully created an appointment')
+            onReset();
             data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD", "HH:mm:ss")
             console.log('This is where I collect the data', data);
             fetch("http://localhost:8000/appointments", {
@@ -101,13 +103,21 @@ const SpecBooking = () => {
                 },
                 body: JSON.stringify(data),
         })
+        
         .then(response => response.json)
         .then(results => {
-            console.log("success", results);
-            
+            console.log("success", results
+            );
+            onReset();
     })
         .catch(error => console.log("Error ", error.message))
-        }}>
+        }
+    
+    
+  return (
+    <div style={{display: 'flex', justifyContent: 'center',}}>
+        <Card hoverable style={{width: 550}}>
+        <Form layout='vertical' onFinish={onFinish}>
             {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name="name" label="first name" {...config}><Input/></Form.Item>
@@ -144,7 +154,7 @@ const SpecBooking = () => {
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
                 <DatePicker disabled={dateState} allowClear={true} showTime={{
-                defaultValue: moment('00:00:00', 'HH:mm:ss'),
+                defaultValue: moment('00:00:00', 'HH:mm:ss'), minuteStep: 30, disabledTime: moment('02:00:00', 'HH:mm:ss'),
                 }} format="YYYY-MM-DD HH:mm:ss" disabledDate={disabledDatedd}/>
             </Form.Item>
             <Form.Item name="room" label="Room" {...config} style={{width: 185}}>
@@ -156,10 +166,12 @@ const SpecBooking = () => {
                 </Form.Item>
             </Row>
             <Form.Item><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
+            <Form.Item><Button type='outline' onClick={onReset}  >Reset</Button></Form.Item>
             <div style={{fontFamily: 'calibri', fontSize: '15px', color: '#1890ff'}}><p><strong>tip: greyed out dates indicate full appointment slots</strong></p></div>
             {console.log(docDate, "is the value stored in DocDate rn")}
             {console.log(docName, "is the value of doctor that has been stored")}
         </Form>
+        
         </Card>
         
 

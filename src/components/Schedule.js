@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, DatePicker, Select, Space, TimePicker, Calendar, Card, Badge, Timeline, Row, Col, Modal } from 'antd';
+import { Alert, DatePicker, Select, Space, TimePicker, Calendar, Card, Badge, Timeline, Row, Col, Modal, } from 'antd';
 import { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import moment from 'moment';
@@ -10,27 +10,30 @@ const Schedule = () => {
     const [type, setType] = useState('time');
     const [rawData, setRawData] = useState();
     const [timelineVisibility, setTimelineVisibility] = useState(false);
+    let count = 0;
     
 
     const dateCellRender = (value) => {
-      for(let i=0; i<rawData.length; i++){
-        console.log("I shall paint the calendar with all the days of the appointments here")
-      if(moment(value).format("YYYY-MM-DD") == moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
-        console.log("Now Im about to print out the dates that have appointments")
+      count=0;
+      rawData.forEach(date => {
+        if(moment(value).format("YYYY-MM-DD") === moment(date.appointmentDate).format("YYYY-MM-DD")){
+          count++;
+        }
+      });
+        if(count>=1){
         return (
           <ul style={{margin: 0, listStyle: 'none', padding: 5}}>
             <li>
-              <Badge status={"success"} text={"click to see appointments"}/>
+              <Badge status={"success"} text={`${count} appointments`}/>
             </li>
           </ul>
         )
-      }
-    }
-  }
+    }}
 
 
 
-    let myvalue = [];
+
+    const [myvalue, setmyvalue] = useState([]);
     const [selectedValue, setSelectedValue] = useState(moment('2022-06-20', 'YYYY-MM-DD'));
     const onPanelChange = (value) => {
         //setValue(value);
@@ -40,16 +43,17 @@ const Schedule = () => {
     const [dateValue, setdateValue] = useState([]);
 
     const onSelect = (value) => {
-        myvalue = [];
+      setTimelineVisibility(false);
+      setmyvalue([]);
         console.log("This is the value that has been selected", moment(value).format("YYYY-MM-DD"))
         for(let i=0; i<rawData.length; i++){
         if(moment(value).format("YYYY-MM-DD") === moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
           console.log("Now Im about to print out the details of a patient's appointment", rawData[i])
-          myvalue.push([rawData[i].name, rawData[i].age, rawData[i].appointmentDate])
+          setmyvalue(val => [...val, [rawData[i].name, rawData[i].age, rawData[i].department, rawData[i].appointmentDate]])
           setTimelineVisibility(true);
-          console.log("Values in the array", myvalue);
         }
-    }}
+    }
+        }
 
 
     useEffect(()=>{
@@ -74,15 +78,14 @@ const Schedule = () => {
     </Card>
     </Col>
     <Col span={6}>
-      { timelineVisibility && <Timeline mode={"alternate"} style={{width: 300}}>
-        {myvalue.map(val => <Timeline.Item><ul style={{listStyle: "none", margin: 0, paddingRight: 5,}}><li>{val}</li></ul></Timeline.Item>)}
+      {timelineVisibility && <Timeline mode={"alternate"} style={{width: 300}}>
+        {myvalue.map(val => <Timeline.Item>{val.map(item =><p>{item}</p>)}</Timeline.Item>)}
       </Timeline>}
     </Col>
     <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
       <p>timeline could go here</p>
       <p>timeline could go here</p>
     </Modal>
-    {console.log(myvalue)}
     </Row>
     </>
   );
