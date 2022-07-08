@@ -79,7 +79,7 @@ const Schedule = () => {
     </Col>
     <Col span={6}>
       {timelineVisibility && <Timeline mode={"alternate"} style={{width: 300}}>
-        {myvalue.map(val => <Timeline.Item>{val.map(item =><p>{item}</p>)}</Timeline.Item>)}
+        {myvalue.map(val => <Timeline.Item>{val.map(item =><p style={{padding: 0, margin: 0}}>{item}</p>)}</Timeline.Item>)}
       </Timeline>}
     </Col>
     <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>

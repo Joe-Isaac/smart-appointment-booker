@@ -70,7 +70,7 @@ const DoctorRecords = () => {
     },
     {
       key:6,
-      title:'Unvailable',
+      title:'Unavailable',
       dataIndex: 'unavailable'
     },
     {

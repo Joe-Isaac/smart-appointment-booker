@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import {Table, Button, Input, Modal, Card, Spin} from 'antd';
+import {Table, Button, Input, Modal, Card, Spin, message} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import useFetch from '../useFetch';
@@ -8,6 +8,8 @@ import useFetch from '../useFetch';
 const Appointment = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [editing, setEditing] = useState(null);
+    const [data, setData] = useState();
+    const [isPending, setIsPending] = useState(true);
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
@@ -30,14 +32,26 @@ const Appointment = () => {
   }
   
   const deleteUser = (record) => {
+    console.log(record);
+    let usedId = record.id
     Modal.confirm({
       title: "Are you sure you want to delete this record?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        return setData(pre=> {
-          return pre.filter((user) => user.id !== record.id);
+        fetch(("http://localhost:8000/appointments/" + usedId), {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                //body: JSON.stringify(data),
         })
+        .then(response => response.json)
+        .then(results => {
+            message.info('Successfully cancelled an appointment');
+            console.log("This is the data that's returned after deleting a record", results)
+            setIsPending(false);
+    })
       }
     })
   }
@@ -45,51 +59,56 @@ const Appointment = () => {
   const columns = [
     {
       key:1,
+      title:'id',
+      dataIndex: 'id'
+    },
+    {
+      key:2,
       title:'name',
       dataIndex: 'name'
     },
     {
-      key:2,
+      key:3,
       title:'age',
       dataIndex: 'age'
     },
     {
-      key:3,
+      key:4,
       title:'phone-number',
       dataIndex: 'phoneNumber'
     },
     {
-      key: 4,
+      key: 5,
       title: 'date of appointment',
       dataIndex: 'appointmentDate',
     },
     {
-      key:5,
+      key:6,
       title:'Appointment status',
       dataIndex: 'status'
     },
     {
-      key:6,
+      key:7,
       title:'Department',
       dataIndex: 'department'
     },
     {
-      key:7,
+      key:8,
       title:'Doctor',
       dataIndex: 'doctor'
     },
     {
-      key:8,
+      key:9,
       title:'clinic',
       dataIndex: 'clinic',
     },
     {
-      key:9,
+      key:10,
       title:'Room Allocated',
       dataIndex: 'room',
     },
     {
-      key: 10,
+      key: 11,
       title: 'actions',
       render: (record) => {
       return <>
@@ -102,7 +121,7 @@ const Appointment = () => {
       </div>
       <div>
       <DeleteOutlined onClick={() => {
-        //deleteUser(record);
+        deleteUser(record);
       }
       } style={{color: 'red', marginLeft:16,}}/>
       Cancel appointment
@@ -111,10 +130,20 @@ const Appointment = () => {
       </>
     }}
   ];
-  const {setData, data, isPending} = useFetch('http://localhost:8000/appointments');
+  // const {setData, data, isPending} = useFetch('http://localhost:8000/appointments');
+
     useEffect(() => {
-      console.log("The records appear to have changed since the last time")
-    }, ['http://localhost:8000/appointments'])
+      fetch("http://localhost:8000/appointments")
+      .then(res => res.json())
+      .then(results => {
+        setData(results);
+        console.log("Testing to see whether this code refires")
+        setIsPending(false);
+      })
+
+      return ()=>console.log("useEffect destroyed")
+    }, [])
+
     
   return(
       <>

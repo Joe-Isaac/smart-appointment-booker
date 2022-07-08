@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message} from 'antd';
+import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
@@ -16,6 +16,8 @@ const SpecBooking = () => {
     const [doc, setDoc] = useState('');
     const [rawData, setRawData] = useState([]);
     const [dateState, setDateState] = useState(true);
+    const [departments, setDepartments] = useState([]);
+    const [docDep, setDocDep] = useState([]);
     const config = {
         rules: [
             {
@@ -34,6 +36,7 @@ const SpecBooking = () => {
     function makeDate(data){
         console.log(data);
     }
+    
 
 
     const disabledDatedd = (current) => { 
@@ -82,18 +85,28 @@ const SpecBooking = () => {
         })
         .catch(err => console.log(err.message))
 
+        fetch("http://localhost:8000/departments")
+        .then(res => res.json())
+        .then(results => {
+        setDepartments(results);
+        console.log("Departments fetched", results)
+        })
+
         return ()=>{console.log("useEffect destroyed")};
     }, [])
-
-    const onReset = () => {
-        form.resetFields();
-        console.log('ni mimiiii');
-    };
-
-    const createItems = docName.map((item)=>(<Option value={item}>{item}</Option>));
+    const setValues = () => {
+        setType(type);
+        for(let i=0; i<rawData.length; i++){
+            for(let j=0; j<rawData.length; j++){
+            if(departments[i].name === rawData[j].departments){
+                console.log("Match has been found", rawData[j].name);
+                setDocDep(val => [...val, rawData[j].name])
+            }}
+        }
+    }
+    const createDepartment = departments.map(val=>(<Option value={val.name}>{val.name}</Option>))
+    const createItems = docDep.map(doc => (<Option value={doc.name}>{doc.name}</Option>));
     const onFinish = (data) => {
-            message.info('Successfully created an appointment')
-            onReset();
             data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD", "HH:mm:ss")
             console.log('This is where I collect the data', data);
             fetch("http://localhost:8000/appointments", {
@@ -106,18 +119,17 @@ const SpecBooking = () => {
         
         .then(response => response.json)
         .then(results => {
-            console.log("success", results
-            );
-            onReset();
+            message.info('Successfully created an appointment');
+            form.resetFields();
     })
-        .catch(error => console.log("Error ", error.message))
+        .catch(error => message.error(error.message))
         }
     
     
   return (
     <div style={{display: 'flex', justifyContent: 'center',}}>
-        <Card hoverable style={{width: 550}}>
-        <Form layout='vertical' onFinish={onFinish}>
+        <Card hoverable style={{width: 550}} getContainer={false} forceRender>
+        <Form form={form} layout='vertical' onFinish={onFinish}>
             {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name="name" label="first name" {...config}><Input/></Form.Item>
@@ -125,16 +137,46 @@ const SpecBooking = () => {
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name="third-name" label="last name" {...config}><Input/></Form.Item>
-            <Form.Item name="age" label="age" {...config}><Input/></Form.Item>
+            <Form.Item name="age" label="age" {...config} ><InputNumber style={{width: 185}}/></Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="phoneNumber" label="Phone number" {...config}><Input/></Form.Item>
+            <Form.Item name="phoneNumber" label="Phone number" {...config}><InputNumber style={{width: 185}}/></Form.Item>
             <Form.Item name="department" label="Department" {...config} style={{width: 185}}>
-                <Select value={type} onChange={setType} defaultValue={"general ward"}>
-                <Option value={'general-ward'}>General Ward</Option>
-                <Option value={'urology'}>Urology</Option>
-                <Option value={'onchology'}>Onchology</Option>
+                <Select value={type} onChange={setValues} defaultValue={"select department to visit"}>
+                {createDepartment}
                 </Select>
+                            { /* <Cascader
+                    options={[
+                        {
+                        value: 'Oncology',
+                        label: 'Oncology',
+                        children: [
+                            {
+                            value: 'Jimmy',
+                            label: 'Jimmy Kimmel',
+                            },
+                        ]},
+                        {
+                        value: 'surgery',
+                        label: 'Surgery',
+                        children: [
+                            {
+                            value: 'bilal',
+                            label: 'Moses Bilal',
+                            },
+                        ]},
+                        {
+                        value: 'dental',
+                        label: 'Dental',
+                        children: [
+                            {
+                            value: 'katie',
+                            label: 'Katie McCath',
+                            },
+                        ]
+                        }
+                    ]}
+        /> */}
                 </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
@@ -166,7 +208,6 @@ const SpecBooking = () => {
                 </Form.Item>
             </Row>
             <Form.Item><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
-            <Form.Item><Button type='outline' onClick={onReset}  >Reset</Button></Form.Item>
             <div style={{fontFamily: 'calibri', fontSize: '15px', color: '#1890ff'}}><p><strong>tip: greyed out dates indicate full appointment slots</strong></p></div>
             {console.log(docDate, "is the value stored in DocDate rn")}
             {console.log(docName, "is the value of doctor that has been stored")}
@@ -174,7 +215,7 @@ const SpecBooking = () => {
         
         </Card>
         
-
+    {console.log(rawData, "is the value stored in the doctors record")}
     </div>
   )
 }
