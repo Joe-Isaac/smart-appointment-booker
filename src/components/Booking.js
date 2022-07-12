@@ -130,7 +130,6 @@ const SpecBooking = () => {
         console.log("This is the value that has been selected", value);
         setDocSelect(value);
         setDateState(false);
-        }
     }
 
     useEffect(() => {
