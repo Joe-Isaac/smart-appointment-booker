@@ -13,11 +13,11 @@ const SpecBooking = () => {
     const [newDate, setNewDate] = useState([]);
     const [docName, setdocName] = useState([]);
     const [docDate, setDocDate] = useState([]);
-    const [doc, setDoc] = useState('');
+    const [doc, setDoc] = useState([]);
     const [rawData, setRawData] = useState([]);
     const [dateState, setDateState] = useState(true);
     const [departments, setDepartments] = useState([]);
-    const [docDep, setDocDep] = useState([]);
+    const [docSelect, setDocSelect] = useState([]);
     const config = {
         rules: [
             {
@@ -40,13 +40,13 @@ const SpecBooking = () => {
 
 
     const disabledDatedd = (current) => { 
-            if(!doc){
+            if(!docSelect){
                 return console.log("Cannot display disabled dates unless doctor is selected first")
             }                                            //does not show disabled dates because no doctor is selected yet
             else{                                   //execute if doctor has been selected
                 console.log("this part has executed, but check the logic further")
                 for(let i=0; i<rawData.length; i++){    //executes thrice because that's how long rawData is at the time this line was written.
-                if(doc == rawData[i].name){             //if the value selected matches any name in the array
+                if(docSelect === rawData[i].name){             //if the value selected matches any name in the array
                 for(let j=0; j<rawData[i].unavailable.length; j++){ //loop through the array whose first name matches the selected
                 if(current < moment() || rawData[i].unavailable[j] == moment(current).format("YYYY-MM-DD")){
                     
@@ -61,21 +61,17 @@ const SpecBooking = () => {
     }
     const [formData, setFormData] = useState(null);
 
-    const selector = (val) => {
-        setDoc(val);
-        setDateState(false);
-    }
 
     useEffect(()=>{
         fetch("http://localhost:8000/doctors")
         .then(res => res.json())
         .then(data => {
             setRawData(data);
+            data.map(value => {setDoc(val => [...val, value.name])})
             for(let i=0; i<data.length; i++){
                 console.log("This message will print many times. Count them yourself")
                 console.log("When you see this message, it means the data was successfully printed", data[i].name)
                 console.log("At this point, I have begun storing the data in an array", setdocName(val => [...val, data[i].name]))
-
                 for(let j=0; j<data[i].unavailable.length; j++){
                     console.log("This is a second loop that executes to sort the deeper elements of the data")
                     setDocDate(val => [...val, data[i].unavailable[j]])
@@ -91,21 +87,26 @@ const SpecBooking = () => {
         setDepartments(results);
         console.log("Departments fetched", results)
         })
-
-        return ()=>{console.log("useEffect destroyed")};
     }, [])
-    const setValues = () => {
-        setType(type);
+    const setValues = (dep) => {
+        setDocSelect([]);
+        setDateState(true);
+        setDoc([]);
+        setType(dep);
+        form.setFieldsValue({"doctor": "select doctor to see"});
         for(let i=0; i<rawData.length; i++){
-            for(let j=0; j<rawData.length; j++){
-            if(departments[i].name === rawData[j].departments){
-                console.log("Match has been found", rawData[j].name);
-                setDocDep(val => [...val, rawData[j].name])
-            }}
+                if(rawData[i].department === dep){
+                    console.log("Match has been found", rawData[i].name);
+                    setDoc(val => [...val, rawData[i].name])
+                }
         }
     }
-    const createDepartment = departments.map(val=>(<Option value={val.name}>{val.name}</Option>))
-    const createItems = docDep.map(doc => (<Option value={doc.name}>{doc.name}</Option>));
+    // const selector = () => {
+    //     setDoc(docDep);
+    //     console.log(doc, "is the value of the selected")
+    //     setDateState(false);
+    // }
+    
     const onFinish = (data) => {
             data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD", "HH:mm:ss")
             console.log('This is where I collect the data', data);
@@ -124,6 +125,18 @@ const SpecBooking = () => {
     })
         .catch(error => message.error(error.message))
         }
+
+    const createDoc = (value) => {
+        console.log("This is the value that has been selected", value);
+        setDocSelect(value);
+        setDateState(false);
+        }
+    }
+
+    useEffect(() => {
+      console.log("The value of docselect has changed")
+    }, [docSelect])
+    
     
     
   return (
@@ -143,48 +156,16 @@ const SpecBooking = () => {
             <Form.Item name="phoneNumber" label="Phone number" {...config}><InputNumber style={{width: 185}}/></Form.Item>
             <Form.Item name="department" label="Department" {...config} style={{width: 185}}>
                 <Select value={type} onChange={setValues} defaultValue={"select department to visit"}>
-                {createDepartment}
+                {departments.map(val=>(<Option value={val.name}>{val.name}</Option>))}
                 </Select>
-                            { /* <Cascader
-                    options={[
-                        {
-                        value: 'Oncology',
-                        label: 'Oncology',
-                        children: [
-                            {
-                            value: 'Jimmy',
-                            label: 'Jimmy Kimmel',
-                            },
-                        ]},
-                        {
-                        value: 'surgery',
-                        label: 'Surgery',
-                        children: [
-                            {
-                            value: 'bilal',
-                            label: 'Moses Bilal',
-                            },
-                        ]},
-                        {
-                        value: 'dental',
-                        label: 'Dental',
-                        children: [
-                            {
-                            value: 'katie',
-                            label: 'Katie McCath',
-                            },
-                        ]
-                        }
-                    ]}
-        /> */}
                 </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name="doctor" label="Doctor" {...config}>
-                <Select value={doc} onChange={selector}
+                {<Select value={docSelect} onChange={createDoc}
                 defaultValue={"select doctor to see"} style={{width: 180}}>
-                {createItems}
-                </Select>
+                {doc && doc.map(val => <Option value={val}>{val}</Option>)}
+                </Select>}
             </Form.Item>
             <Form.Item name="clinic" label="Clinic" {...config} style={{width: 185}}>
                 <Select value={typeTwo} onChange={setTypeTwo} defaultValue={"please select clinic"}>

@@ -65,7 +65,7 @@
       "gender": "male",
       "email": "km@example.com",
       "specialty": "Dentist",
-      "department": "Dental",
+      "department": "dental",
       "address": "5th street Nairobi",
       "unavailable": [
         "2022-07-14",
@@ -75,6 +75,60 @@
         "2022-07-18",
         "2022-07-19",
         "2022-07-23"
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Rosebell Mohammed",
+      "gender": "female",
+      "email": "km@example.com",
+      "specialty": "cardiologidt",
+      "department": "cardiology",
+      "address": "5th street Nairobi",
+      "unavailable": [
+        "2022-07-14",
+        "2022-07-24",
+        "2022-07-15",
+        "2022-07-16",
+        "2022-07-18",
+        "2022-07-19",
+        "2022-07-23"
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Linda Mwaniki",
+      "gender": "female",
+      "email": "km@example.com",
+      "specialty": "Oncologist",
+      "department": "oncology",
+      "address": "5th street Nairobi",
+      "unavailable": [
+        "2022-07-14",
+        "2022-07-24",
+        "2022-07-15",
+        "2022-07-16",
+        "2022-07-18",
+        "2022-07-19",
+        "2022-07-25"
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Lambda Duke",
+      "gender": "male",
+      "email": "km@example.com",
+      "specialty": "dentist",
+      "department": "dental",
+      "address": "5th street Nairobi",
+      "unavailable": [
+        "2022-07-14",
+        "2022-07-24",
+        "2022-07-15",
+        "2022-07-16",
+        "2022-07-18",
+        "2022-07-19",
+        "2022-07-26"
       ]
     }
   ],
