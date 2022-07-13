@@ -69,8 +69,8 @@ const Appointment = () => {
     },
     {
       key:3,
-      title:'age',
-      dataIndex: 'age'
+      title:'dob',
+      dataIndex: 'dob'
     },
     {
       key:4,
@@ -109,6 +109,11 @@ const Appointment = () => {
     },
     {
       key: 11,
+      title: 'Time of appointment',
+      dataIndex: 'appointmentTime',
+    },
+    {
+      key: 12,
       title: 'actions',
       render: (record) => {
       return <>

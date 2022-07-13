@@ -49,7 +49,7 @@ const Schedule = () => {
         for(let i=0; i<rawData.length; i++){
         if(moment(value).format("YYYY-MM-DD") === moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
           console.log("Now Im about to print out the details of a patient's appointment", rawData[i])
-          setmyvalue(val => [...val, [rawData[i].name, rawData[i].age, rawData[i].department, rawData[i].appointmentDate]])
+          setmyvalue(val => [...val, [(rawData[i].appointmentTime), rawData[i].name, (moment().format("YYYY")-(moment(rawData[i].dob).format("YYYY"))+" years old"), rawData[i].department, rawData[i].appointmentDate]])
           setTimelineVisibility(true);
         }
     }

@@ -185,202 +185,39 @@
   ],
   "appointments": [
     {
-      "name": "Cristine",
-      "second-name": "dd",
-      "third-name": "s",
-      "age": "q",
-      "phoneNumber": "4545455",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "inpatient",
-      "appointmentDate": "2022-07-27",
-      "room": "A02",
-      "id": "13"
-    },
-    {
-      "name": "Abdul",
-      "second-name": "s",
-      "third-name": "d",
-      "age": "d",
-      "phoneNumber": "0786875437",
-      "department": "onchology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-08-06",
-      "room": "A02",
-      "id": "14"
-    },
-    {
-      "name": "Abdul",
-      "second-name": "s",
-      "third-name": "d",
-      "age": "d",
-      "phoneNumber": "0786875437",
-      "department": "onchology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-08-06",
-      "room": "A02",
-      "id": "15"
-    },
-    {
-      "name": "Abdul",
-      "second-name": "s",
-      "third-name": "d",
-      "age": "d",
-      "phoneNumber": "0786875437",
-      "department": "onchology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-08-06",
-      "room": "A02",
-      "id": "16"
-    },
-    {
-      "name": "f",
-      "second-name": "f",
-      "third-name": "f",
-      "age": "f",
-      "phoneNumber": "f",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "inpatient",
-      "appointmentDate": "2022-07-20",
-      "room": "A02",
-      "id": "18"
-    },
-    {
-      "name": "f",
-      "second-name": "f",
-      "third-name": "f",
-      "age": "f",
-      "phoneNumber": "f",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "inpatient",
-      "appointmentDate": "2022-07-20",
-      "room": "A02",
-      "id": "19"
-    },
-    {
-      "name": "f",
-      "second-name": "f",
-      "third-name": "f",
-      "age": "f",
-      "phoneNumber": "f",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "inpatient",
-      "appointmentDate": "2022-07-20",
-      "room": "A02",
-      "id": "20"
-    },
-    {
-      "name": "f",
-      "second-name": "f",
-      "third-name": "f",
-      "age": "f",
-      "phoneNumber": "f",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "inpatient",
-      "appointmentDate": "2022-07-20",
-      "room": "A02",
-      "id": "21"
-    },
-    {
-      "name": "f",
-      "second-name": "f",
-      "third-name": "f",
-      "age": "f",
-      "phoneNumber": "4545455",
-      "department": "general-ward",
-      "doctor": "Joey Brad",
-      "clinic": "inpatient",
-      "appointmentDate": "2022-07-20",
-      "room": "A02",
-      "id": "22"
-    },
-    {
-      "name": "Abdul",
-      "second-name": "ewe",
-      "third-name": "we",
-      "age": "24",
-      "phoneNumber": "0786875437",
-      "department": "general-ward",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-07-17",
-      "room": "A02",
-      "id": "23"
-    },
-    {
-      "name": "n",
-      "second-name": "n",
-      "third-name": "n",
-      "age": "nn",
-      "phoneNumber": "n",
-      "department": "general-ward",
-      "doctor": "Joey Brad",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-07-13",
-      "room": "A02",
-      "id": "24"
-    },
-    {
-      "name": "q",
-      "second-name": "q",
-      "third-name": "qqq",
-      "age": "q",
-      "phoneNumber": "q",
-      "department": "general-ward",
-      "doctor": "Jimmy Kimmel",
+      "name": "Jojo",
+      "second-name": "Klay",
+      "third-name": "Thompson",
+      "dob": "2000-04-04",
+      "phoneNumber": 9282828,
+      "department": "oncology",
+      "doctor": "Katie McCath",
       "clinic": "outpatient",
       "appointmentDate": "2022-07-20",
       "room": "A02",
-      "id": "25"
-    },
-    {
-      "name": "Abdul",
-      "second-name": "s",
-      "third-name": "mkn ",
-      "age": "mm",
-      "phoneNumber": "kkk",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-07-20",
-      "room": "A01",
-      "id": "t-O5buL"
-    },
-    {
-      "name": "Joe",
-      "second-name": "ewe",
-      "third-name": "Gahts",
-      "age": "24",
-      "phoneNumber": "666666666",
-      "department": "urology",
-      "doctor": "Jimmy Kimmel",
-      "clinic": "outpatient",
-      "appointmentDate": "2022-07-27",
-      "room": "A02",
-      "id": "33kQDh_"
+      "appointmentTime": "13:45",
+      "id": 1
     }
   ],
   "departments": [
-    {"id": "1",
+    {
+      "id": "1",
       "name": "oncology"
     },
-    {"id": "2",
+    {
+      "id": "2",
       "name": "urology"
     },
-    {"id": "3",
+    {
+      "id": "3",
       "name": "dental"
     },
-    {"id": "4",
+    {
+      "id": "4",
       "name": "cardiology"
     },
-    {"id": "5",
+    {
+      "id": "5",
       "name": "surgery"
     }
   ],

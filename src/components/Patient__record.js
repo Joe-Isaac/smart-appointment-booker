@@ -27,6 +27,7 @@ const Patientrecord = () => {
   const editUser = (record) => {
     setIsVisible(true);
     setEditing({...record});
+    console.log(record, " is the record at edit user")
   }
   
   const deleteUser = (record) => {
@@ -70,6 +71,7 @@ const Patientrecord = () => {
       return <>
       <EditOutlined onClick={() => {
         editUser(record);
+        console.log(record, " is the value passed when you click here")
       }}/>
       <DeleteOutlined onClick={() => {
         deleteUser(record);

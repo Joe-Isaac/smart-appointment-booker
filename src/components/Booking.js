@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader} from 'antd';
+import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader, TimePicker, Tooltip} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
@@ -18,6 +18,8 @@ const SpecBooking = () => {
     const [dateState, setDateState] = useState(true);
     const [departments, setDepartments] = useState([]);
     const [docSelect, setDocSelect] = useState([]);
+    const [depDisable, setDepDisable] = useState(false);
+    const [toolVisible, setToolVisible] = useState(false);
     const config = {
         rules: [
             {
@@ -38,6 +40,15 @@ const SpecBooking = () => {
     }
     
 
+    // const disableTime = (now) => {
+    //     if (moment(now).format("HH:mm") < moment().format("HH:mm")){
+    //         return{
+    //             disabledHours: () => 12,
+    //             disabledMinuutes: () => 10
+    //         };
+    //     }
+    // }
+
 
     const disabledDatedd = (current) => { 
             if(!docSelect){
@@ -56,6 +67,14 @@ const SpecBooking = () => {
         }
         }
         };
+
+        function range(start, end) {
+            const result = [];
+            for (let i = start; i < end; i++) {
+              result.push(i);
+            }
+            return result;
+          }
 
     const onSelect = (data) => {
     }
@@ -87,6 +106,9 @@ const SpecBooking = () => {
         setDepartments(results);
         console.log("Departments fetched", results)
         })
+
+
+        
     }, [])
     const setValues = (dep) => {
         setDocSelect([]);
@@ -108,7 +130,9 @@ const SpecBooking = () => {
     // }
     
     const onFinish = (data) => {
-            data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD", "HH:mm:ss")
+            data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD");
+            data.appointmentTime = moment(data.appointmentTime).format("HH:mm");
+            data.dob = moment(data.dob).format("YYYY-MM-DD");
             console.log('This is where I collect the data', data);
             fetch("http://localhost:8000/appointments", {
                 method: 'POST',
@@ -130,6 +154,12 @@ const SpecBooking = () => {
         console.log("This is the value that has been selected", value);
         setDocSelect(value);
         setDateState(false);
+        setDepDisable(true);
+        rawData.map(val => {
+            if(val.name === value){
+                form.setFieldsValue({"department": val.department})
+            }
+        })
     }
 
     useEffect(() => {
@@ -149,12 +179,14 @@ const SpecBooking = () => {
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name="third-name" label="last name" {...config}><Input/></Form.Item>
-            <Form.Item name="age" label="age" {...config} ><InputNumber style={{width: 185}}/></Form.Item>
+            <Tooltip visible={toolVisible} title="Type date using format YYYY-MM-DD"><Form.Item name='dob' label="Date of birth" {...config}>
+                <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 180}}/>
+            </Form.Item></Tooltip>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name="phoneNumber" label="Phone number" {...config}><InputNumber style={{width: 185}}/></Form.Item>
             <Form.Item name="department" label="Department" {...config} style={{width: 185}}>
-                <Select value={type} onChange={setValues} defaultValue={"select department to visit"}>
+                <Select value={type} onChange={setValues} disabled={depDisable} defaultValue={"select department to visit"}>
                 {departments.map(val=>(<Option value={val.name}>{val.name}</Option>))}
                 </Select>
                 </Form.Item>
@@ -175,9 +207,7 @@ const SpecBooking = () => {
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
             <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                <DatePicker disabled={dateState} allowClear={true} showTime={{
-                defaultValue: moment('00:00:00', 'HH:mm:ss'), minuteStep: 30, disabledTime: moment('02:00:00', 'HH:mm:ss'),
-                }} format="YYYY-MM-DD HH:mm:ss" disabledDate={disabledDatedd}/>
+                <DatePicker disabled={dateState} allowClear={true} format="YYYY-MM-DD" disabledDate={disabledDatedd}/>
             </Form.Item>
             <Form.Item name="room" label="Room" {...config} style={{width: 185}}>
                 <Select value={typeTwo} onChange={setRoom} defaultValue={"Select room"}>
@@ -187,10 +217,20 @@ const SpecBooking = () => {
                 </Select>
                 </Form.Item>
             </Row>
+            <Row style={{display: 'flex', justifyContent:'space-between'}}>
+            <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
+                <TimePicker disabled={dateState} allowClear={true}
+                defaultValue={moment('08:00:00', 'HH:mm:ss')} minuteStep={15}
+                format="HH:mm:ss" disabledTime={() => {
+                    return {
+                    disabledHours: () => range(0, 9),
+                    // disabledMinutes: () => 30,
+        }
+                  }}/>
+            </Form.Item>
+            </Row>
             <Form.Item><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
-            <div style={{fontFamily: 'calibri', fontSize: '15px', color: '#1890ff'}}><p><strong>tip: greyed out dates indicate full appointment slots</strong></p></div>
-            {console.log(docDate, "is the value stored in DocDate rn")}
-            {console.log(docName, "is the value of doctor that has been stored")}
+            
         </Form>
         
         </Card>
