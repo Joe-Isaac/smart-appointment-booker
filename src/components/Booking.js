@@ -16,10 +16,11 @@ const SpecBooking = () => {
     const [doc, setDoc] = useState([]);
     const [rawData, setRawData] = useState([]);
     const [dateState, setDateState] = useState(true);
-    const [departments, setDepartments] = useState([]);
+    const [clinics, setClinics] = useState([]);
     const [docSelect, setDocSelect] = useState([]);
     const [depDisable, setDepDisable] = useState(false);
     const [toolVisible, setToolVisible] = useState(false);
+    const [appointmentDate, setAppointmentDate] = useState([]);
     const config = {
         rules: [
             {
@@ -55,7 +56,7 @@ const SpecBooking = () => {
                 return console.log("Cannot display disabled dates unless doctor is selected first")
             }                                            //does not show disabled dates because no doctor is selected yet
             else{                                   //execute if doctor has been selected
-                console.log("this part has executed, but check the logic further")
+                myArr=[];
                 for(let i=0; i<rawData.length; i++){    //executes thrice because that's how long rawData is at the time this line was written.
                 if(docSelect === rawData[i].name){             //if the value selected matches any name in the array
                 for(let j=0; j<rawData[i].unavailable.length; j++){ //loop through the array whose first name matches the selected
@@ -65,6 +66,26 @@ const SpecBooking = () => {
                 }//this block will disable the dates that have been found in the array
             }}
         }
+        console.log('This is the value returned by onchange', moment(current).format("HH:mm"))
+        rawData.map(name => {
+            if (name.name === docSelect){
+                console.log(name.booked)
+                if(moment(name.booked.date).format("YYYY-MM-DD") === moment(current).format("YYYY-MM-DD")){
+                    name.booked.time.map(newTime => {
+                        //console.log(newTime);
+                        console.log(moment(current).format("HH:mm"))
+                        if(newTime==(moment(current).format("HH:mm"))){
+                            console.log("The times are the same son")
+                            minArr.push(parseInt(moment(newTime, "HH:mm").format("mm")))
+                        }
+                        })
+                    }
+
+                }
+                    //The block above disables the dates
+                
+        }
+    )  
         }
         };
 
@@ -100,24 +121,31 @@ const SpecBooking = () => {
         })
         .catch(err => console.log(err.message))
 
-        fetch("http://localhost:8000/departments")
+        fetch("http://localhost:8000/clinics")
         .then(res => res.json())
         .then(results => {
-        setDepartments(results);
-        console.log("Departments fetched", results)
+        setClinics(results);
+        console.log("Clinics fetched", results)
         })
 
 
-        
+        fetch("http://localhost:8000/appointmentDates")
+        .then(res => res.json())
+        .then(data => {
+            setAppointmentDate(data);
+        })
+
+
+
     }, [])
-    const setValues = (dep) => {
+    const setValues = (clin) => {
         setDocSelect([]);
         setDateState(true);
         setDoc([]);
-        setType(dep);
+        setType(clin);
         form.setFieldsValue({"doctor": "select doctor to see"});
         for(let i=0; i<rawData.length; i++){
-                if(rawData[i].department === dep){
+                if(rawData[i].clinic === clin){
                     console.log("Match has been found", rawData[i].name);
                     setDoc(val => [...val, rawData[i].name])
                 }
@@ -157,16 +185,51 @@ const SpecBooking = () => {
         setDepDisable(true);
         rawData.map(val => {
             if(val.name === value){
-                form.setFieldsValue({"department": val.department})
+                form.setFieldsValue({"clinic": val.clinic})
             }
         })
     }
 
+    
+
     useEffect(() => {
       console.log("The value of docselect has changed")
     }, [docSelect])
+
+    let myArr = [];
+
+
+    let timeDisabled = [];
+    let disabledMinutes = [];
     
-    
+    // const onChange = (val) => {
+    //     myArr=[];
+    //     console.log('This is the value returned by onchange', val)
+    //     rawData.map(name => {
+    //         if (name.name === docSelect){
+    //             console.log(name.booked)
+    //             if(moment(name.booked.date).format("YYYY-MM-DD") === moment(val).format("YYYY-MM-DD")){
+    //                 name.booked.time.map(newTime => {
+    //                     //console.log(newTime);
+    //                     console.log(moment(val).format("HH:mm"))
+    //                     if(newTime==(moment(val).format("HH:mm"))){
+    //                         console.log("The times are the same son")
+    //                         minArr.push(parseInt(moment(newTime, "HH:mm").format("mm")))
+    //                     }
+    //                     })
+    //                 }
+
+    //             }
+    //                 //The block above disables the dates
+                
+    //     }
+    // )}
+
+    let minArr = [];
+    const DisabledTime = () => ({
+        disabledHours: ()=> myArr,
+        disabledMinutes: () => minArr
+      });
     
   return (
     <div style={{display: 'flex', justifyContent: 'center',}}>
@@ -174,60 +237,70 @@ const SpecBooking = () => {
         <Form form={form} layout='vertical' onFinish={onFinish}>
             {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="name" label="first name" {...config}><Input/></Form.Item>
-            <Form.Item name="second-name" label="second name" {...config}><Input/></Form.Item>
+                    <Form.Item name="name" label="first name" {...config}>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item name="second-name" label="second name" {...config}>
+                        <Input/>
+                    </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="third-name" label="last name" {...config}><Input/></Form.Item>
-            <Tooltip visible={toolVisible} title="Type date using format YYYY-MM-DD"><Form.Item name='dob' label="Date of birth" {...config}>
-                <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 180}}/>
-            </Form.Item></Tooltip>
+                    <Form.Item name="third-name" label="last name" {...config}>
+                        <Input/>
+                    </Form.Item>
+                    <Tooltip visible={toolVisible} title="Type date using format YYYY-MM-DD">
+                    <Form.Item name='dob' label="Date of birth" {...config}>
+                        <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 180}}/>
+                    </Form.Item>
+                    </Tooltip>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="phoneNumber" label="Phone number" {...config}><InputNumber style={{width: 185}}/></Form.Item>
-            <Form.Item name="department" label="Department" {...config} style={{width: 185}}>
-                <Select value={type} onChange={setValues} disabled={depDisable} defaultValue={"select department to visit"}>
-                {departments.map(val=>(<Option value={val.name}>{val.name}</Option>))}
-                </Select>
-                </Form.Item>
+                    <Form.Item name="phoneNumber" label="Phone number" {...config}>
+                        <InputNumber style={{width: 185}}/>
+                        </Form.Item>
+                    <Form.Item name="clinic" label="Clinics" {...config} style={{width: 185}}>
+                        <Select value={type} onChange={setValues} disabled={depDisable} defaultValue={"select clinic to visit"}>
+                        {clinics.map(val=>(<Option value={val.name}>{val.name}</Option>))}
+                        </Select>
+                    </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name="doctor" label="Doctor" {...config}>
-                {<Select value={docSelect} onChange={createDoc}
-                defaultValue={"select doctor to see"} style={{width: 180}}>
-                {doc && doc.map(val => <Option value={val}>{val}</Option>)}
-                </Select>}
-            </Form.Item>
-            <Form.Item name="clinic" label="Clinic" {...config} style={{width: 185}}>
-                <Select value={typeTwo} onChange={setTypeTwo} defaultValue={"please select clinic"}>
-                    <Option value={"inpatient"}>Inpatient</Option>
-                    <Option value={"outpatient"}>Outpatient</Option>
-                </Select>
-                </Form.Item>
+                    <Form.Item name="doctor" label="Doctor" {...config}>
+                        {<Select value={docSelect} onChange={createDoc}
+                        defaultValue={"select doctor to see"} style={{width: 180}}>
+                        {doc && doc.map(val => <Option value={val}>{val}</Option>)}
+                        </Select>}
+                    </Form.Item>
+                    {/* <Form.Item name="clinic" label="Clinic" {...config} style={{width: 185}}>
+                        <Select value={typeTwo} onChange={setTypeTwo} defaultValue={"please select clinic"}>
+                            <Option value={"inpatient"}>Inpatient</Option>
+                            <Option value={"outpatient"}>Outpatient</Option>
+                        </Select>
+                        </Form.Item> */} 
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                <DatePicker disabled={dateState} allowClear={true} format="YYYY-MM-DD" disabledDate={disabledDatedd}/>
-            </Form.Item>
-            <Form.Item name="room" label="Room" {...config} style={{width: 185}}>
-                <Select value={typeTwo} onChange={setRoom} defaultValue={"Select room"}>
-                    <Option value={"A01"}>A02</Option>
-                    <Option value={"A02"}>A03</Option>
-                    <Option value={"A04"}>A04</Option>
-                </Select>
-                </Form.Item>
+                    <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
+                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm"}}
+                         disabledTime={DisabledTime} 
+                        allowClear={true}
+                        disabledDate={disabledDatedd}/>
+                    </Form.Item>
+                    <Form.Item name="room" label="Room" {...config} style={{width: 185}}>
+                        <Select value={typeTwo} onChange={setRoom} defaultValue={"Select room"}>
+                            <Option value={"A01"}>A02</Option>
+                            <Option value={"A02"}>A03</Option>
+                            <Option value={"A04"}>A04</Option>
+                        </Select>
+                        </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
+            {/* <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
                 <TimePicker disabled={dateState} allowClear={true}
                 defaultValue={moment('08:00:00', 'HH:mm:ss')} minuteStep={15}
-                format="HH:mm:ss" disabledTime={() => {
-                    return {
-                    disabledHours: () => range(0, 9),
-                    // disabledMinutes: () => 30,
-        }
-                  }}/>
-            </Form.Item>
+                format="HH:mm:ss" disabledTime={DisabledTime}
+                // disabledMinutes: () => disabledMinutes,
+                />
+            </Form.Item> */}
             </Row>
             <Form.Item><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
             
