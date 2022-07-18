@@ -21,6 +21,8 @@ const SpecBooking = () => {
     const [depDisable, setDepDisable] = useState(false);
     const [toolVisible, setToolVisible] = useState(false);
     const [appointmentDate, setAppointmentDate] = useState([]);
+    let hour = [];
+    let min = [];
     const config = {
         rules: [
             {
@@ -55,39 +57,19 @@ const SpecBooking = () => {
             if(!docSelect){
                 return console.log("Cannot display disabled dates unless doctor is selected first")
             }                                            //does not show disabled dates because no doctor is selected yet
-            else{                                   //execute if doctor has been selected
-                myArr=[];
+            else{    
                 for(let i=0; i<rawData.length; i++){    //executes thrice because that's how long rawData is at the time this line was written.
                 if(docSelect === rawData[i].name){             //if the value selected matches any name in the array
                 for(let j=0; j<rawData[i].unavailable.length; j++){ //loop through the array whose first name matches the selected
                 if(current < moment() || rawData[i].unavailable[j] == moment(current).format("YYYY-MM-DD")){
-                    
                     return current;
                 }//this block will disable the dates that have been found in the array
             }}
         }
-        console.log('This is the value returned by onchange', moment(current).format("HH:mm"))
-        rawData.map(name => {
-            if (name.name === docSelect){
-                console.log(name.booked)
-                if(moment(name.booked.date).format("YYYY-MM-DD") === moment(current).format("YYYY-MM-DD")){
-                    name.booked.time.map(newTime => {
-                        //console.log(newTime);
-                        console.log(moment(current).format("HH:mm"))
-                        if(newTime==(moment(current).format("HH:mm"))){
-                            console.log("The times are the same son")
-                            minArr.push(parseInt(moment(newTime, "HH:mm").format("mm")))
-                        }
-                        })
-                    }
-
-                }
-                    //The block above disables the dates
-                
-        }
-    )  
         }
         };
+
+        
 
         function range(start, end) {
             const result = [];
@@ -190,18 +172,37 @@ const SpecBooking = () => {
         })
     }
 
-    
 
     useEffect(() => {
-      console.log("The value of docselect has changed")
+      console.log("The value of docselect has changed") 
     }, [docSelect])
 
-    let myArr = [];
+
 
 
     let timeDisabled = [];
     let disabledMinutes = [];
-    
+    const newFunc = (date) => {
+        console.log("A date has been clicked")
+        rawData.map(val => {
+            if(val.name === docSelect){
+                console.log("The doc selected matches record being checked")
+                val.booked.map(det => {
+                if(moment(date).format("YYYY-MM-DD") === moment(det.date).format("YYYY-MM-DD")){
+                    console.log("The date selected matches record being examined")
+                    det.time.map(t => {
+                        console.log("This is the second deepest level of the code", t)
+                        console.log("This is the time selected", moment(date).format("HH:mm"))
+                        if(moment(date).format("HH:mm") === t){
+                        console.log("so far so good, print the values now")
+                        min.push(parseInt(moment(t, "HH:mm").format("mm")))
+                    }})
+                }
+            })}
+        })
+        }
+        //myArr = [12, 13, 14, 15]
+
     // const onChange = (val) => {
     //     myArr=[];
     //     console.log('This is the value returned by onchange', val)
@@ -225,11 +226,12 @@ const SpecBooking = () => {
     //     }
     // )}
 
-    let minArr = [];
-    const DisabledTime = () => ({
-        disabledHours: ()=> myArr,
-        disabledMinutes: () => minArr
-      });
+    const DisabledTime = (val) => {
+        console.log(val, " kkkkkkkkkkkkkk")
+        return {
+        disabledHours: ()=> hour,
+        disabledMinutes: () => min
+      }};
     
   return (
     <div style={{display: 'flex', justifyContent: 'center',}}>
@@ -280,8 +282,10 @@ const SpecBooking = () => {
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
                     <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm"}}
-                         disabledTime={DisabledTime} 
+                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", 
+                        }}
+                        disabledTime={DisabledTime}
+                        onSelect={newFunc}
                         allowClear={true}
                         disabledDate={disabledDatedd}/>
                     </Form.Item>
