@@ -21,6 +21,7 @@ const SpecBooking = () => {
     const [depDisable, setDepDisable] = useState(false);
     const [toolVisible, setToolVisible] = useState(false);
     const [appointmentDate, setAppointmentDate] = useState([]);
+    const [isFull, setIsFull] = useState(false);
     let hour = [];
     let min = [];
     const config = {
@@ -140,8 +141,7 @@ const SpecBooking = () => {
     // }
     
     const onFinish = (data) => {
-            data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD");
-            data.appointmentTime = moment(data.appointmentTime).format("HH:mm");
+            data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD HH:mm");
             data.dob = moment(data.dob).format("YYYY-MM-DD");
             console.log('This is where I collect the data', data);
             fetch("http://localhost:8000/appointments", {
@@ -158,7 +158,18 @@ const SpecBooking = () => {
             form.resetFields();
     })
         .catch(error => message.error(error.message))
+
+
+
+
+        fetch("http://localhost:8000/doctors")
+        .then(response => response.json)
+        .then(results => {
+            message.info('Successfully acquired this data from the doctors profile',results);
+    })
+        .catch(error => message.error(error.message))
         }
+
 
     const createDoc = (value) => {
         console.log("This is the value that has been selected", value);
@@ -183,24 +194,26 @@ const SpecBooking = () => {
     let timeDisabled = [];
     let disabledMinutes = [];
     const newFunc = (date) => {
-        console.log("A date has been clicked")
         rawData.map(val => {
             if(val.name === docSelect){
                 console.log("The doc selected matches record being checked")
                 val.booked.map(det => {
                 if(moment(date).format("YYYY-MM-DD") === moment(det.date).format("YYYY-MM-DD")){
-                    console.log("The date selected matches record being examined")
+                    console.log("The date selected matches record being examined");
+                    min = []
                     det.time.map(t => {
-                        console.log("This is the second deepest level of the code", t)
-                        console.log("This is the time selected", moment(date).format("HH:mm"))
-                        if(moment(date).format("HH:mm") === t){
-                        console.log("so far so good, print the values now")
-                        min.push(parseInt(moment(t, "HH:mm").format("mm")))
-                    }})
-                }
-            })}
-        })
-        }
+                        // console.log("This is the second deepest level of the code", t)
+                        // console.log("This is the time selected", moment(date).format("HH"))
+                        // console.log("This is the time in hours of the appointed days for the selected doctor, in the database", moment(t, "HH:mm").format("HH"));
+                         if(moment(date).format("HH") === moment(t, "HH:mm").format("HH")){
+                            min.push(parseInt(moment(t, "HH:mm").format("mm")));
+                            console.log("Minute pushed", min)
+                            }
+                        
+                        })
+                }})
+            }})}
+        
         //myArr = [12, 13, 14, 15]
 
     // const onChange = (val) => {
@@ -226,8 +239,7 @@ const SpecBooking = () => {
     //     }
     // )}
 
-    const DisabledTime = (val) => {
-        console.log(val, " kkkkkkkkkkkkkk")
+    const DisabledTime = () => {
         return {
         disabledHours: ()=> hour,
         disabledMinutes: () => min
@@ -250,11 +262,10 @@ const SpecBooking = () => {
                     <Form.Item name="third-name" label="last name" {...config}>
                         <Input/>
                     </Form.Item>
-                    <Tooltip visible={toolVisible} title="Type date using format YYYY-MM-DD">
+                    
                     <Form.Item name='dob' label="Date of birth" {...config}>
                         <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 180}}/>
                     </Form.Item>
-                    </Tooltip>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
                     <Form.Item name="phoneNumber" label="Phone number" {...config}>
@@ -282,7 +293,7 @@ const SpecBooking = () => {
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
                     <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", 
+                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", initialValue:"00:00", 
                         }}
                         disabledTime={DisabledTime}
                         onSelect={newFunc}
