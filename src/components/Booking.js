@@ -151,24 +151,49 @@ const SpecBooking = () => {
                 },
                 body: JSON.stringify(data),
         })
-        
-        .then(response => response.json)
+        .then(response => response.json())
         .then(results => {
-            message.info('Successfully created an appointment');
+            message.info('Successfully created an appointment', results);
             form.resetFields();
     })
         .catch(error => message.error(error.message))
 
+        // ------------------------------------------------------
+        //-----------------------------------------------------------
 
-
-
-        fetch("http://localhost:8000/doctors")
-        .then(response => response.json)
+        fetch("http://localhost:8000/doctors?name="+data.doctor)
+        .then(response => response.json())
         .then(results => {
-            message.info('Successfully acquired this data from the doctors profile',results);
-    })
-        .catch(error => message.error(error.message))
-        }
+            console.log('Successfully acquired this data from the doctors profile',results)
+                results[0].booked.map(d => {
+                    if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") === d.date){
+                        d.time.push(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm"))
+                    }
+                    else if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") !== d.date){
+                        results[0].booked.push({
+                            "date": moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD"),
+                            "time": moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm")
+                        })
+                    }
+                    console.log(results)
+                }
+                
+                )
+                fetch("http://localhost:8000/doctors/"+results.id, {
+                    method: 'PUT',
+                    headers: {
+                        'content-Type': 'application/json'
+                    },
+                    body:JSON.stringify(results)
+                }).then(
+                    console.log("1st Promise resolved")
+    
+                )
+            .catch(error => message.error(error.message))
+            })
+
+
+    }
 
 
     const createDoc = (value) => {

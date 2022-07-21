@@ -75,7 +75,9 @@
           "time": [
             "15:00",
             "16:00",
-            "16:40"
+            "16:40",
+            "17:00",
+            "18:20"
           ]
         }
       ]
@@ -404,26 +406,26 @@
       "id": 7
     },
     {
-      "name": "Cristine",
-      "second-name": "yyu",
-      "third-name": "d",
-      "dob": "2022-07-05",
-      "phoneNumber": 5,
-      "clinic": "oncology",
-      "doctor": "Linda Mwaniki",
-      "appointmentDate": "2022-07-21 12:20",
+      "name": "444",
+      "second-name": "4",
+      "third-name": "4",
+      "dob": "2022-07-04",
+      "phoneNumber": 4,
+      "clinic": "dental",
+      "doctor": "Moses Bilal",
+      "appointmentDate": "2022-07-22 10:59",
       "room": "A01",
       "id": 8
     },
     {
-      "name": "Cristine",
-      "second-name": "yyu",
-      "third-name": "d",
-      "dob": "2022-07-05",
-      "phoneNumber": 5,
-      "clinic": "oncology",
-      "doctor": "Linda Mwaniki",
-      "appointmentDate": "2022-07-21 12:20",
+      "name": "Abdul",
+      "second-name": "ewe",
+      "third-name": "s",
+      "dob": "2022-07-04",
+      "phoneNumber": 44,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentDate": "2022-07-22 12:20",
       "room": "A01",
       "id": 9
     },
@@ -431,25 +433,109 @@
       "name": "Abdul",
       "second-name": "dd",
       "third-name": "d",
-      "dob": "2022-07-05",
-      "phoneNumber": 4545,
-      "clinic": "oncology",
-      "doctor": "Linda Mwaniki",
-      "appointmentDate": "2022-07-21 12:20",
+      "dob": "2022-07-04",
+      "phoneNumber": 55,
+      "clinic": "urology",
+      "doctor": "Joey Brad",
+      "appointmentDate": "2022-07-22 14:00",
       "room": "A01",
       "id": 10
     },
     {
-      "name": "m",
-      "second-name": "kmmm",
-      "third-name": "j",
-      "dob": "2022-07-05",
-      "phoneNumber": 87787,
-      "clinic": "urology",
-      "doctor": "Joey Brad",
-      "appointmentDate": "2022-07-21 13:20",
+      "name": "Abdul",
+      "second-name": "s",
+      "third-name": "doesnt matter either",
+      "dob": "2022-07-01",
+      "phoneNumber": 55,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-22 14:36",
       "room": "A01",
       "id": 11
+    },
+    {
+      "name": "Abdul",
+      "second-name": "s",
+      "third-name": "Gahts",
+      "dob": "2022-07-07",
+      "phoneNumber": 44,
+      "clinic": "oncology",
+      "doctor": "Linda Mwaniki",
+      "appointmentDate": "2022-07-27 14:00",
+      "room": "A01",
+      "id": 12
+    },
+    {
+      "name": "w",
+      "second-name": "w",
+      "third-name": "w",
+      "dob": "2022-07-13",
+      "phoneNumber": 4,
+      "clinic": "oncology",
+      "doctor": "Linda Mwaniki",
+      "appointmentDate": "2022-07-22 15:01",
+      "room": "A02",
+      "id": 13
+    },
+    {
+      "name": "Abdul",
+      "second-name": "ewe",
+      "third-name": "s",
+      "dob": "2022-07-13",
+      "phoneNumber": 555,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-22 16:00",
+      "room": "A02",
+      "id": 14
+    },
+    {
+      "name": "Cristine",
+      "second-name": "s",
+      "third-name": "d",
+      "dob": "2022-07-05",
+      "phoneNumber": 66,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-22 16:00",
+      "room": "A01",
+      "id": 15
+    },
+    {
+      "name": "Cristine",
+      "second-name": "dd",
+      "third-name": "doesnt matter either",
+      "dob": "2022-07-06",
+      "phoneNumber": 76,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-22 16:00",
+      "room": "A02",
+      "id": 16
+    },
+    {
+      "name": "Abdul",
+      "second-name": "dd",
+      "third-name": "doesnt matter either",
+      "dob": "2022-07-06",
+      "phoneNumber": 66,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-22 16:00",
+      "room": "A01",
+      "id": 17
+    },
+    {
+      "name": "hhh",
+      "second-name": "j",
+      "third-name": "Gahts",
+      "dob": "2022-07-04",
+      "phoneNumber": 7,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-22 16:57",
+      "room": "A02",
+      "id": 18
     }
   ],
   "clinics": [
@@ -504,21 +590,6 @@
       "roomType": "ICU",
       "roomStatus": "Unavailable",
       "roomSchedule": ""
-    }
-  ],
-  "appointmentDates": [
-    {
-      "date": "2022-07-23",
-      "time": [
-        "11:00",
-        "11:20",
-        "11:40",
-        "12:00",
-        "12:20",
-        "12:40",
-        "13:00",
-        "13:20"
-      ]
     }
   ]
 }

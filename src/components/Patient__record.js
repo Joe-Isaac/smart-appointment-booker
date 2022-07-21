@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import {Table, Button, Input, Modal, Spin} from 'antd';
+import {Table, Button, Input, Modal, Spin, Form} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import useFetch from '../useFetch';
 
@@ -103,6 +103,8 @@ const Patientrecord = () => {
             onCancel={() => setIsVisible(false)}
             closable={true}
             okText={'save'}>
+              <Form>
+                <Form.Item name={"name"}>
                 <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Name</label>
                 <Input style={{margin: 8, borderRadius: 5,}}value={editing?.name} onChange={
                   (e) => {
@@ -111,6 +113,8 @@ const Patientrecord = () => {
                     })
                   }
                 }/>
+                </Form.Item>
+                <Form.Item name={"gender"}>
                 <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Gender</label>
                 <Input style={{margin: 8, borderRadius: 5,}} value={editing?.gender} onChange={
                   (e) => {
@@ -119,6 +123,8 @@ const Patientrecord = () => {
                     })
                   }
                 }/>
+                </Form.Item>
+                <Form.Item>
                 <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Email</label>
                 <Input style={{margin: 8, borderRadius: 5,}}value={editing?.email} onChange={
                   (e) => {
@@ -127,14 +133,16 @@ const Patientrecord = () => {
                     })
                   }
                 }/>
-                <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Address</label>
-                <Input style={{margin: 8, borderRadius: 5,}} value={editing?.address} onChange={
+                </Form.Item>
+                {/* <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Address</label>
+                <Input style={{margin: 8, borderRadius: 5,}} value={"This address has been moved"} onChange={
                   (e) => {
                     setEditing(pre=>{
                       return {...pre, address:e.target.value}
                     })
                   }
-                }/>
+                }/> */}
+                </Form>
             </Modal>
             <Button style={{marginLeft: 20,}} onClick={addUser}>Add new user</Button>
             {
