@@ -3,6 +3,7 @@ import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  me
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
+import Operation from 'antd/lib/transfer/operation';
 
 const SpecBooking = () => {
     const [form] = Form.useForm();
@@ -122,7 +123,6 @@ const SpecBooking = () => {
 
     }, [])
     const setValues = (clin) => {
-        setDocSelect([]);
         setDateState(true);
         setDoc([]);
         setType(clin);
@@ -151,46 +151,58 @@ const SpecBooking = () => {
                 },
                 body: JSON.stringify(data),
         })
-        .then(response => response.json())
-        .then(results => {
-            message.info('Successfully created an appointment', results);
-            form.resetFields();
-    })
+        .then(val =>{
+            form.resetFields()
+            setDepDisable(false);
+            setDateState(true);
+        })
         .catch(error => message.error(error.message))
 
         // ------------------------------------------------------
         //-----------------------------------------------------------
-
         fetch("http://localhost:8000/doctors?name="+data.doctor)
         .then(response => response.json())
         .then(results => {
-            console.log('Successfully acquired this data from the doctors profile',results)
-                results[0].booked.map(d => {
-                    if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") === d.date){
-                        d.time.push(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm"))
+            console.log("lllllllllllllll doctor", results)
+             let truth = false;
+        //     console.log('Successfully acquired this data from the doctors profile',results)
+             let operatingData = results[0];
+             console.log("This is the copy variable", operatingData);
+                 operatingData.booked.map(d => {
+                     if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") === d.date){
+                         d.time.push(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm"))
+                         console.log("If the date matched, this is the result", results)
+                        truth = true;
                     }
-                    else if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") !== d.date){
-                        results[0].booked.push({
+                })
+                if(truth == false){
+                    operatingData.booked.push(
+                        {
                             "date": moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD"),
-                            "time": moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm")
-                        })
-                    }
-                    console.log(results)
+                            "time": [moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm")]
+                        }
+                    );
+                    console.log("If the date didnt match, this is the result", operatingData);
                 }
-                
-                )
-                fetch("http://localhost:8000/doctors/"+results.id, {
+                fetch("http://localhost:8000/doctors/"+operatingData.id, {
                     method: 'PUT',
                     headers: {
                         'content-Type': 'application/json'
                     },
-                    body:JSON.stringify(results)
-                }).then(
-                    console.log("1st Promise resolved")
-    
+                    body:JSON.stringify(operatingData)
+                }).then( val => {
+                    console.log("1st Promise resolved", val);
+                    fetch("http://localhost:8000/doctors")
+                        .then(res => res.json())
+                        .then(data => {
+                            setRawData(data);
+                })
+            }
                 )
             .catch(error => message.error(error.message))
-            })
+              })
+             .catch(err => console.log(err.message))
+
 
 
     }

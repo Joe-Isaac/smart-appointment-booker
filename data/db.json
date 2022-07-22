@@ -117,6 +117,13 @@
             "16:00",
             "16:40"
           ]
+        },
+        {
+          "date": "2022-07-25",
+          "time": [
+            "16:00",
+            "16:20"
+          ]
         }
       ]
     },
@@ -536,6 +543,42 @@
       "appointmentDate": "2022-07-22 16:57",
       "room": "A02",
       "id": 18
+    },
+    {
+      "name": "Abdul",
+      "second-name": "dd",
+      "third-name": "d",
+      "dob": "2022-07-06",
+      "phoneNumber": 999,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentDate": "2022-07-23 08:00",
+      "room": "A02",
+      "id": 19
+    },
+    {
+      "name": "hiik",
+      "second-name": "kjhiuk",
+      "third-name": "khoij",
+      "dob": "2022-07-04",
+      "phoneNumber": 676766776,
+      "clinic": "oncology",
+      "doctor": "Katie McCath",
+      "appointmentDate": "2022-07-25 16:00",
+      "room": "A01",
+      "id": 20
+    },
+    {
+      "name": "jbjh",
+      "second-name": "mnkn",
+      "third-name": "nbmn",
+      "dob": "2022-07-12",
+      "phoneNumber": 999,
+      "clinic": "oncology",
+      "doctor": "Katie McCath",
+      "appointmentDate": "2022-07-25 16:20",
+      "room": "A02",
+      "id": 21
     }
   ],
   "clinics": [
