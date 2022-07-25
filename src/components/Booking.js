@@ -23,6 +23,7 @@ const SpecBooking = () => {
     const [toolVisible, setToolVisible] = useState(false);
     const [appointmentDate, setAppointmentDate] = useState([]);
     const [isFull, setIsFull] = useState(false);
+    const [alertVisible, setAlertVisible] = useState(false);
     let hour = [];
     let min = [];
     const config = {
@@ -56,10 +57,15 @@ const SpecBooking = () => {
 
 
     const disabledDatedd = (current) => { 
+
+
             if(!docSelect){
-                return console.log("Cannot display disabled dates unless doctor is selected first")
+                return message.warning("Cannot display disabled dates unless doctor is selected first")
             }                                            //does not show disabled dates because no doctor is selected yet
-            else{    
+            else{   
+                let countArr = [];
+                countArr = range(0,8);
+                hour = countArr.concat(range(19, 24));
                 for(let i=0; i<rawData.length; i++){    //executes thrice because that's how long rawData is at the time this line was written.
                 if(docSelect === rawData[i].name){             //if the value selected matches any name in the array
                 for(let j=0; j<rawData[i].unavailable.length; j++){ //loop through the array whose first name matches the selected
@@ -93,13 +99,10 @@ const SpecBooking = () => {
             setRawData(data);
             data.map(value => {setDoc(val => [...val, value.name])})
             for(let i=0; i<data.length; i++){
-                console.log("This message will print many times. Count them yourself")
-                console.log("When you see this message, it means the data was successfully printed", data[i].name)
-                console.log("At this point, I have begun storing the data in an array", setdocName(val => [...val, data[i].name]))
+
                 for(let j=0; j<data[i].unavailable.length; j++){
-                    console.log("This is a second loop that executes to sort the deeper elements of the data")
                     setDocDate(val => [...val, data[i].unavailable[j]])
-                    console.log("I have successfully set the dates of unavailable doctors if you see this message", data[i].unavailable[j])
+                    
                 }
             }
         })
@@ -113,7 +116,7 @@ const SpecBooking = () => {
         })
 
 
-        fetch("http://localhost:8000/appointmentDates")
+        fetch("http://localhost:8000/appointments")
         .then(res => res.json())
         .then(data => {
             setAppointmentDate(data);
@@ -143,7 +146,7 @@ const SpecBooking = () => {
     const onFinish = (data) => {
             data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD HH:mm");
             data.dob = moment(data.dob).format("YYYY-MM-DD");
-            console.log('This is where I collect the data', data);
+            //console.log('This is where I collect the data', data);
             fetch("http://localhost:8000/appointments", {
                 method: 'POST',
                 headers: {
@@ -155,6 +158,7 @@ const SpecBooking = () => {
             form.resetFields()
             setDepDisable(false);
             setDateState(true);
+            message.info("Successfully scheduled an appointment")
         })
         .catch(error => message.error(error.message))
 
@@ -171,7 +175,7 @@ const SpecBooking = () => {
                  operatingData.booked.map(d => {
                      if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") === d.date){
                          d.time.push(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm"))
-                         console.log("If the date matched, this is the result", results)
+                         //console.log("If the date matched, this is the result", results)
                         truth = true;
                     }
                 })
@@ -182,7 +186,7 @@ const SpecBooking = () => {
                             "time": [moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm")]
                         }
                     );
-                    console.log("If the date didnt match, this is the result", operatingData);
+                    //console.log("If the date didnt match, this is the result", operatingData);
                 }
                 fetch("http://localhost:8000/doctors/"+operatingData.id, {
                     method: 'PUT',
@@ -221,9 +225,9 @@ const SpecBooking = () => {
     }
 
 
-    useEffect(() => {
-      console.log("The value of docselect has changed") 
-    }, [docSelect])
+    // useEffect(() => {
+    //   console.log("The value of docselect has changed") 
+    // }, [docSelect])
 
 
 
@@ -233,21 +237,26 @@ const SpecBooking = () => {
     const newFunc = (date) => {
         rawData.map(val => {
             if(val.name === docSelect){
-                console.log("The doc selected matches record being checked")
+                //console.log("The doc selected matches record being checked")
                 val.booked.map(det => {
                 if(moment(date).format("YYYY-MM-DD") === moment(det.date).format("YYYY-MM-DD")){
-                    console.log("The date selected matches record being examined");
+                    //console.log("The date selected matches record being examined");
                     min = []
+                    
                     det.time.map(t => {
+                        
                         // console.log("This is the second deepest level of the code", t)
                         // console.log("This is the time selected", moment(date).format("HH"))
                         // console.log("This is the time in hours of the appointed days for the selected doctor, in the database", moment(t, "HH:mm").format("HH"));
                          if(moment(date).format("HH") === moment(t, "HH:mm").format("HH")){
                             min.push(parseInt(moment(t, "HH:mm").format("mm")));
-                            console.log("Minute pushed", min)
+                            //console.log("Minute pushed", min)
                             }
                         
                         })
+                        if(min.length===3){
+                            message.warning("Cannot select hours which have full appointments")
+                        }
                 }})
             }})}
         
@@ -285,6 +294,7 @@ const SpecBooking = () => {
   return (
     <div style={{display: 'flex', justifyContent: 'center',}}>
         <Card hoverable style={{width: 550}} getContainer={false} forceRender>
+            
         <Form form={form} layout='vertical' onFinish={onFinish}>
             {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
@@ -333,6 +343,7 @@ const SpecBooking = () => {
                         <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", initialValue:"00:00", 
                         }}
                         disabledTime={DisabledTime}
+                        hideDisabledOptions={true}
                         onSelect={newFunc}
                         allowClear={true}
                         disabledDate={disabledDatedd}/>
@@ -359,8 +370,6 @@ const SpecBooking = () => {
         </Form>
         
         </Card>
-        
-    {console.log(rawData, "is the value stored in the doctors record")}
     </div>
   )
 }

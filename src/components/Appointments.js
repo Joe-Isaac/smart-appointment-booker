@@ -49,8 +49,13 @@ const Appointment = () => {
         .then(response => response.json)
         .then(results => {
             message.info('Successfully cancelled an appointment');
-            console.log("This is the data that's returned after deleting a record", results)
+            console.log("This is what's returned after deleting a record", results)
             setIsPending(false);
+            fetch("http://localhost:8000/appointments")
+            .then(res => res.json())
+            .then(data => {
+              setData(data);
+            })
     })
       }
     })
