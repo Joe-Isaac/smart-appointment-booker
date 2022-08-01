@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader, TimePicker, Tooltip} from 'antd';
+import { Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber,
+    Cascader, TimePicker, Tooltip, Col, Badge, Tag} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
 import Operation from 'antd/lib/transfer/operation';
+import { CheckCircleOutlined, CheckCircleFilled, } from '@ant-design/icons';
 
 const SpecBooking = () => {
     const [form] = Form.useForm();
@@ -24,6 +26,8 @@ const SpecBooking = () => {
     const [appointmentDate, setAppointmentDate] = useState([]);
     const [isFull, setIsFull] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
+    const [show, setShow] = useState(true)
+    const [selectedDate, setSelectedDate] = useState();
     let hour = [];
     let min = [];
     const config = {
@@ -201,8 +205,7 @@ const SpecBooking = () => {
                         .then(data => {
                             setRawData(data);
                 })
-            }
-                )
+            })
             .catch(error => message.error(error.message))
               })
              .catch(err => console.log(err.message))
@@ -235,6 +238,7 @@ const SpecBooking = () => {
     let timeDisabled = [];
     let disabledMinutes = [];
     const newFunc = (date) => {
+        setSelectedDate(date);
         rawData.map(val => {
             if(val.name === docSelect){
                 //console.log("The doc selected matches record being checked")
@@ -290,10 +294,21 @@ const SpecBooking = () => {
         disabledHours: ()=> hour,
         disabledMinutes: () => min
       }};
+
+      const enabledHours = ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19'];
+      const enabledMinutes = ['00', '20', '40'];
+
+      let color = ''
     
   return (
-    <div style={{display: 'flex', justifyContent: 'center',}}>
-        <Card hoverable style={{width: 550}} getContainer={false} forceRender>
+    <div >
+        <Row gutter={4} style={{display: 'flex', justifyContent: 'space-evenly'}}>
+            <Col>
+            
+        <Card
+        style={{fontSize: '18px', height: 550, width:550, borderRadius: '8px',
+         marginRight: 8, boxShadow: '4px 4px 10px #f3f3f3', backgroundColor: '#efdbff' }}
+        hoverable={true} getContainer={false} forceRender>
             
         <Form form={form} layout='vertical' onFinish={onFinish}>
             {console.log('This is the value of the values stored in the state variable', formData)}
@@ -340,10 +355,10 @@ const SpecBooking = () => {
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
                     <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", initialValue:"00:00", 
+                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", 
                         }}
+                        initialValue={'2022-08-07 08:00'}
                         disabledTime={DisabledTime}
-                        hideDisabledOptions={true}
                         onSelect={newFunc}
                         allowClear={true}
                         disabledDate={disabledDatedd}/>
@@ -370,6 +385,42 @@ const SpecBooking = () => {
         </Form>
         
         </Card>
+            </Col>
+            <Col>
+            <Card hoverable style={{width:300, boxShadow: '1px 4px 10px 10px #f3f3f3', 
+                                   textAlign:'center'}}>
+            <p style={{marginBottom: 3}}>Time availability table</p>
+            <p style={{color:'blue', marginBottom:5, marginTop:0, padding:0, fontSize:13, fontFamily:'calibri'}}>
+                Date selected: {moment(selectedDate).format('YYYY-MM-DD')}
+            </p>
+            {
+                enabledHours.map(val => <div style={{display:'flex', flexDirection: 'row',
+                justifyContent: 'space-between'}}>
+                    {enabledMinutes.map(min => {
+                        color = '';
+                        
+                        
+                        if(moment(val+":"+min, "HH:mm").format("HH:mm")===moment("09:00", "HH:mm").format("HH:mm")){
+                            color = "#f5222d";
+                            console.log("These colors do actually match")
+                        }
+                        console.log(moment(val+":"+min, 'HH:mm').format("HH:mm"), "is the moment of the time shown")
+                    return(
+                    <>
+                    <Tag style={{
+                        width: 10,
+                        height: 10,
+                    }} color={color}/>
+                    <p style={{paddingTop:0, marginTop:0 }}>{val+":"+min}</p>
+                    </>)
+    
+})}
+                </div>
+                )
+            }
+            </Card>
+            </Col>
+        </Row>
     </div>
   )
 }

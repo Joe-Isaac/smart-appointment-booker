@@ -16,10 +16,6 @@ const App = () => {
     const[doctorHidden, setdoctorHidden] = useState(true);
   
 const { Header, Content, Sider } = Layout;
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
 
 const dashboard1 = () => { 
   return (navigate('Legend'));
@@ -45,7 +41,6 @@ const updateUsers = () => {
   <Layout>
     <Header className="header">
       <div className="logo" />
-      <Menu theme="light" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
     </Header>
     <Layout>
       <Sider width={220} trigger={null} collapsed={collapsed} collapsible className="site-layout-background">

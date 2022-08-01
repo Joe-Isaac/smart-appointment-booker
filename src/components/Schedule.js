@@ -72,20 +72,25 @@ const Schedule = () => {
     <br/>
     <Row style={{display: 'flex'}}>
     <Col span={18}>
-    <Card hoverable>
+    <Card style={{backgroundColor: '#f9f0ff'}} hoverable>
     <Alert message={`You selected date: ${selectedValue?.format('YYYY-MM-DD')}`}/>
-    {rawData && <Calendar dateCellRender={dateCellRender} fullscreen={true} onSelect={onSelect} onPanelChange={onPanelChange}/>}
+    {rawData && <Calendar style={{backgroundColor: '#f9f0ff'}} dateCellRender={dateCellRender}
+     fullscreen={true} onSelect={onSelect}
+     onPanelChange={onPanelChange}/>}
     </Card>
     </Col>
     <Col span={6}>
       {timelineVisibility && <Timeline mode={"alternate"} style={{width: 300}}>
-        {myvalue.map(val => <Timeline.Item>{val.map(item =><p style={{padding: 0, margin: 0}}>{item}</p>)}</Timeline.Item>)}
+        {myvalue.map(val => <Timeline.Item>{val.map(item =>
+        <p style={{padding: 0, margin: 0}}>
+          {item}</p>)}
+          </Timeline.Item>)}
       </Timeline>}
     </Col>
-    <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
+    {/* <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
       <p>timeline could go here</p>
       <p>timeline could go here</p>
-    </Modal>
+    </Modal> */}
     </Row>
     </>
   );
