@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber,
-    Cascader, TimePicker, Tooltip, Col, Badge, Tag} from 'antd';
+import { Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader, TimePicker, Tooltip, Col, Badge, Tag} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
 import Operation from 'antd/lib/transfer/operation';
 import { CheckCircleOutlined, CheckCircleFilled, } from '@ant-design/icons';
+import { toBeEnabled } from '@testing-library/jest-dom/dist/matchers';
 
 const SpecBooking = () => {
     const [form] = Form.useForm();
@@ -27,7 +27,7 @@ const SpecBooking = () => {
     const [isFull, setIsFull] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
     const [show, setShow] = useState(true)
-    const [selectedDate, setSelectedDate] = useState();
+    const [selectedDate, setSelectedDate] =  useState('');
     let hour = [];
     let min = [];
     const config = {
@@ -232,23 +232,30 @@ const SpecBooking = () => {
     //   console.log("The value of docselect has changed") 
     // }, [docSelect])
 
+    let timeArray = [];
+    let dimeArray = [];
 
 
-
+    
     let timeDisabled = [];
     let disabledMinutes = [];
+
+
     const newFunc = (date) => {
-        setSelectedDate(date);
+        setSelectedDate(date)
+
         rawData.map(val => {
             if(val.name === docSelect){
-                //console.log("The doc selected matches record being checked")
                 val.booked.map(det => {
                 if(moment(date).format("YYYY-MM-DD") === moment(det.date).format("YYYY-MM-DD")){
                     //console.log("The date selected matches record being examined");
                     min = []
                     
+                    
                     det.time.map(t => {
                         
+                        dimeArray.push(moment(t, "HH:mm").format("HH:mm"))
+                        console.log("Value pushed in the array is...", moment(t, "HH:mm").format("HH:mm"))
                         // console.log("This is the second deepest level of the code", t)
                         // console.log("This is the time selected", moment(date).format("HH"))
                         // console.log("This is the time in hours of the appointed days for the selected doctor, in the database", moment(t, "HH:mm").format("HH"));
@@ -262,7 +269,10 @@ const SpecBooking = () => {
                             message.warning("Cannot select hours which have full appointments")
                         }
                 }})
-            }})}
+            }})
+                console.log("The array has these values", dimeArray);
+                timeArray = dimeArray;
+        }
         
         //myArr = [12, 13, 14, 15]
 
@@ -295,14 +305,13 @@ const SpecBooking = () => {
         disabledMinutes: () => min
       }};
 
-      const enabledHours = ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19'];
-      const enabledMinutes = ['00', '20', '40'];
-
-      let color = ''
+      const enabledHours = ['08','09','10','11','12','13','14','15','16','17','18'];
+      const enabledMinutes = ['00', '20', '30'];
+      let color = "";
     
   return (
     <div >
-        <Row gutter={4} style={{display: 'flex', justifyContent: 'space-evenly'}}>
+        <Row style={{display: 'flex', justifyContent: 'space-evenly'}}>
             <Col>
             
         <Card
@@ -346,20 +355,17 @@ const SpecBooking = () => {
                         {doc && doc.map(val => <Option value={val}>{val}</Option>)}
                         </Select>}
                     </Form.Item>
-                    {/* <Form.Item name="clinic" label="Clinic" {...config} style={{width: 185}}>
-                        <Select value={typeTwo} onChange={setTypeTwo} defaultValue={"please select clinic"}>
-                            <Option value={"inpatient"}>Inpatient</Option>
-                            <Option value={"outpatient"}>Outpatient</Option>
-                        </Select>
-                        </Form.Item> */} 
+                   
+                    <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
+                        <Input disabled={true}/>
+                    </Form.Item>
+
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
                     <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                        <DatePicker disabled={dateState} showTime={{minuteStep: 20, format:"HH:mm", 
-                        }}
-                        initialValue={'2022-08-07 08:00'}
+                        <DatePicker disabled={dateState}
                         disabledTime={DisabledTime}
-                        onSelect={newFunc}
+                        onChange={newFunc}
                         allowClear={true}
                         disabledDate={disabledDatedd}/>
                     </Form.Item>
@@ -389,35 +395,66 @@ const SpecBooking = () => {
             <Col>
             <Card hoverable style={{width:300, boxShadow: '1px 4px 10px 10px #f3f3f3', 
                                    textAlign:'center'}}>
-            <p style={{marginBottom: 3}}>Time availability table</p>
-            <p style={{color:'blue', marginBottom:5, marginTop:0, padding:0, fontSize:13, fontFamily:'calibri'}}>
+            <p>Time availability table</p>
+            
+            {selectedDate && <p style={{color:'blue', marginBottom:5, marginTop:0, padding:0, fontSize:13, fontFamily:'calibri'}}>
                 Date selected: {moment(selectedDate).format('YYYY-MM-DD')}
-            </p>
-            {
+            </p>}
+
+            {timeArray? 
+            <div>{
                 enabledHours.map(val => <div style={{display:'flex', flexDirection: 'row',
                 justifyContent: 'space-between'}}>
-                    {enabledMinutes.map(min => {
-                        color = '';
+                    {
+                    enabledMinutes.map(min => {
+                    
+                        color = '#52c41a';
                         
+                        rawData.map(item => {
+                            if(item.name === docSelect){
+                                item.booked.map(newdate => {
+                                    if(newdate.date === moment(selectedDate).format("YYYY-MM-DD")){
+                                        console.log("This is where we print our time", newdate.time)
+                                        newdate.time.map(realtime => {
+
+                                            if(moment(realtime, "HH:mm").format("HH:mm") === moment(val + ":" + min, "HH:mm").format("HH:mm")){
+                                                color="#f5222d";
+                                                console.log("the time has been changed", newdate.time)
+                                            }
+
+                                        })
+                                        
+                                    }
+                                })
+                            }
+                        })
+                    
                         
-                        if(moment(val+":"+min, "HH:mm").format("HH:mm")===moment("09:00", "HH:mm").format("HH:mm")){
-                            color = "#f5222d";
-                            console.log("These colors do actually match")
-                        }
-                        console.log(moment(val+":"+min, 'HH:mm').format("HH:mm"), "is the moment of the time shown")
+                        let allTime = val+":"+min;
+                        console.log(allTime);
+
                     return(
                     <>
                     <Tag style={{
                         width: 10,
                         height: 10,
-                    }} color={color}/>
+                    }} color={color}
+                    onClick={()=>{
+                         form.setFieldsValue({"appointmentTime":allTime})
+                        console.log("You clicked " , allTime)
+                    }}
+                    />
                     <p style={{paddingTop:0, marginTop:0 }}>{val+":"+min}</p>
                     </>)
     
 })}
                 </div>
                 )
+                } 
+                </div> : true
             }
+
+        
             </Card>
             </Col>
         </Row>
