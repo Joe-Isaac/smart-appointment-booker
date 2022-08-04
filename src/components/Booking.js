@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Input, Calendar, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader, TimePicker, Tooltip, Col, Badge, Tag} from 'antd';
+import { Input, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader, TimePicker, Tooltip, Col, Badge, Tag} from 'antd';
 import moment from 'moment';
 import Appointment from './Appointments'
 import useFetch from '../useFetch';
@@ -25,9 +25,12 @@ const SpecBooking = () => {
     const [toolVisible, setToolVisible] = useState(false);
     const [appointmentDate, setAppointmentDate] = useState([]);
     const [isFull, setIsFull] = useState(false);
-    const [alertVisible, setAlertVisible] = useState(false);
+    const [toolDeterminer, setToolDeterminer] = useState(false);
     const [show, setShow] = useState(true)
     const [selectedDate, setSelectedDate] =  useState('');
+    const [display, setDisplay] = useState(false);
+    const [visibleTime, setVisibleTime] = useState(true);
+    const [lastToolVisible, setlastToolVisible] = useState(true);
     let hour = [];
     let min = [];
     const config = {
@@ -97,7 +100,7 @@ const SpecBooking = () => {
 
 
     useEffect(()=>{
-        fetch("http://localhost:8000/doctors")
+        fetch("http://192.168.2.179:8000/doctors")
         .then(res => res.json())
         .then(data => {
             setRawData(data);
@@ -112,7 +115,7 @@ const SpecBooking = () => {
         })
         .catch(err => console.log(err.message))
 
-        fetch("http://localhost:8000/clinics")
+        fetch("http://192.168.2.179:8000/clinics")
         .then(res => res.json())
         .then(results => {
         setClinics(results);
@@ -120,7 +123,7 @@ const SpecBooking = () => {
         })
 
 
-        fetch("http://localhost:8000/appointments")
+        fetch("http://192.168.2.179:8000/appointments")
         .then(res => res.json())
         .then(data => {
             setAppointmentDate(data);
@@ -148,10 +151,11 @@ const SpecBooking = () => {
     // }
     
     const onFinish = (data) => {
-            data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD HH:mm");
+            data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD");
             data.dob = moment(data.dob).format("YYYY-MM-DD");
+            data.appointmentTime = moment(data.appointmentTime, "HH:mm").format("HH:mm");
             //console.log('This is where I collect the data', data);
-            fetch("http://localhost:8000/appointments", {
+            fetch("http://192.168.2.179:8000/appointments", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -166,9 +170,14 @@ const SpecBooking = () => {
         })
         .catch(error => message.error(error.message))
 
+
+
         // ------------------------------------------------------
         //-----------------------------------------------------------
-        fetch("http://localhost:8000/doctors?name="+data.doctor)
+
+
+
+        fetch("http://192.168.2.179:8000/doctors?name="+data.doctor)
         .then(response => response.json())
         .then(results => {
             console.log("lllllllllllllll doctor", results)
@@ -177,22 +186,23 @@ const SpecBooking = () => {
              let operatingData = results[0];
              console.log("This is the copy variable", operatingData);
                  operatingData.booked.map(d => {
-                     if(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD") === d.date){
-                         d.time.push(moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm"))
+                     if(moment(data.appointmentDate, "YYYY-MM-DD").format("YYYY-MM-DD") === d.date){
+                         d.time.push(moment(data.appointmentTime, "HH:mm").format("HH:mm"))
                          //console.log("If the date matched, this is the result", results)
                         truth = true;
+                        setDisplay(false);
                     }
                 })
                 if(truth == false){
                     operatingData.booked.push(
                         {
-                            "date": moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD"),
-                            "time": [moment(data.appointmentDate, "YYYY-MM-DD HH:mm").format("HH:mm")]
+                            "date": moment(data.appointmentDate, "YYYY-MM-DD").format("YYYY-MM-DD"),
+                            "time": [moment(data.appointmentTime, "HH:mm").format("HH:mm")]
                         }
                     );
                     //console.log("If the date didnt match, this is the result", operatingData);
                 }
-                fetch("http://localhost:8000/doctors/"+operatingData.id, {
+                fetch("http://192.168.2.179:8000/doctors/"+operatingData.id, {
                     method: 'PUT',
                     headers: {
                         'content-Type': 'application/json'
@@ -200,7 +210,7 @@ const SpecBooking = () => {
                     body:JSON.stringify(operatingData)
                 }).then( val => {
                     console.log("1st Promise resolved", val);
-                    fetch("http://localhost:8000/doctors")
+                    fetch("http://192.168.2.179:8000/doctors")
                         .then(res => res.json())
                         .then(data => {
                             setRawData(data);
@@ -216,6 +226,7 @@ const SpecBooking = () => {
 
 
     const createDoc = (value) => {
+        setToolDeterminer(true);
         console.log("This is the value that has been selected", value);
         setDocSelect(value);
         setDateState(false);
@@ -243,6 +254,8 @@ const SpecBooking = () => {
 
     const newFunc = (date) => {
         setSelectedDate(date)
+        form.setFieldsValue({"appointmentTime": ''})
+        setDisplay(true);
 
         rawData.map(val => {
             if(val.name === docSelect){
@@ -265,9 +278,6 @@ const SpecBooking = () => {
                             }
                         
                         })
-                        if(min.length===3){
-                            message.warning("Cannot select hours which have full appointments")
-                        }
                 }})
             }})
                 console.log("The array has these values", dimeArray);
@@ -306,8 +316,10 @@ const SpecBooking = () => {
       }};
 
       const enabledHours = ['08','09','10','11','12','13','14','15','16','17','18'];
-      const enabledMinutes = ['00', '20', '30'];
+      const enabledMinutes = ['00', '20', '40'];
       let color = "";
+      let realerTime = []
+      let truthVar = false;
     
   return (
     <div >
@@ -316,7 +328,7 @@ const SpecBooking = () => {
             
         <Card
         style={{fontSize: '18px', height: 550, width:550, borderRadius: '8px',
-         marginRight: 8, boxShadow: '4px 4px 10px #f3f3f3', backgroundColor: '#efdbff' }}
+         marginRight: 8, boxShadow: '4px 4px 10px #f3f3f3', backgroundColor: '#e6f7ff' }}
         hoverable={true} getContainer={false} forceRender>
             
         <Form form={form} layout='vertical' onFinish={onFinish}>
@@ -355,13 +367,23 @@ const SpecBooking = () => {
                         {doc && doc.map(val => <Option value={val}>{val}</Option>)}
                         </Select>}
                     </Form.Item>
-                   
+                    <Tooltip title="This part is disabled, enter date to activate time selection pane">
                     <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
-                        <Input disabled={true}/>
+                        <Input disabled={true} style={{color:"blue"}}/>
+                        
+                        
                     </Form.Item>
+                    </Tooltip>
 
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
+                <Tooltip visible={toolVisible} onMouseEnter={()=>{
+                    if(!toolDeterminer){
+                        setToolVisible(true);
+                    }
+                
+                }} 
+                    onMouseLeave={()=>setToolVisible(false)} title="Date selection is disabled, please select doctor first">
                     <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
                         <DatePicker disabled={dateState}
                         disabledTime={DisabledTime}
@@ -369,6 +391,7 @@ const SpecBooking = () => {
                         allowClear={true}
                         disabledDate={disabledDatedd}/>
                     </Form.Item>
+                    </Tooltip>
                     <Form.Item name="room" label="Room" {...config} style={{width: 185}}>
                         <Select value={typeTwo} onChange={setRoom} defaultValue={"Select room"}>
                             <Option value={"A01"}>A02</Option>
@@ -393,16 +416,23 @@ const SpecBooking = () => {
         </Card>
             </Col>
             <Col>
-            <Card hoverable style={{width:300, boxShadow: '1px 4px 10px 10px #f3f3f3', 
-                                   textAlign:'center'}}>
-            <p>Time availability table</p>
+            {display &&  <Card hoverable style={{width:300, boxShadow: '1px 4px 10px 10px #f3f3f3', 
+                                   textAlign:'center' }}>
+            <p style={{fontFamily:"calibri", fontSize: 20, margin:0}}><strong>Time selection pane</strong></p>
             
-            {selectedDate && <p style={{color:'blue', marginBottom:5, marginTop:0, padding:0, fontSize:13, fontFamily:'calibri'}}>
-                Date selected: {moment(selectedDate).format('YYYY-MM-DD')}
+            {selectedDate && <p style={{marginBottom:5, marginTop:0, padding:0, fontSize:13, fontFamily:'calibri'}}>
+                <strong>Date selected: {moment(selectedDate).format('YYYY-MM-DD')}</strong>
             </p>}
 
-            {timeArray? 
-            <div>{
+            <Tooltip visible={visibleTime} onMouseEnter={()=>{
+
+                setTimeout(()=>{
+                    setVisibleTime(false);
+                    setlastToolVisible(false);
+                }, 1000)
+
+            }}
+            title="Green means available slot, red means it's taken."><div>{
                 enabledHours.map(val => <div style={{display:'flex', flexDirection: 'row',
                 justifyContent: 'space-between'}}>
                     {
@@ -416,10 +446,11 @@ const SpecBooking = () => {
                                     if(newdate.date === moment(selectedDate).format("YYYY-MM-DD")){
                                         console.log("This is where we print our time", newdate.time)
                                         newdate.time.map(realtime => {
-
+                                            
                                             if(moment(realtime, "HH:mm").format("HH:mm") === moment(val + ":" + min, "HH:mm").format("HH:mm")){
                                                 color="#f5222d";
-                                                console.log("the time has been changed", newdate.time)
+                                                console.log("the time has been changed", newdate.time);
+                                                realerTime.push(realtime);
                                             }
 
                                         })
@@ -436,12 +467,28 @@ const SpecBooking = () => {
                     return(
                     <>
                     <Tag style={{
-                        width: 10,
-                        height: 10,
+                        width: 15,
+                        height: 15,
                     }} color={color}
                     onClick={()=>{
-                         form.setFieldsValue({"appointmentTime":allTime})
-                        console.log("You clicked " , allTime)
+                        console.log("This is realer time before looping", realerTime)
+                        realerTime.map(real => {
+                        if(moment(real, "HH:mm").format("HH:mm") === moment(allTime, "HH:mm").format("HH:mm")){
+                            message.error("Cannot select a taken slot")
+                            truthVar=true;
+                            form.setFieldsValue({"appointmentTime": ''})
+                            }
+                            
+                        })
+
+                        if(truthVar === false){
+                            message.info("Date selected");
+                            form.setFieldsValue({"appointmentTime": moment(allTime, "HH:mm").format("HH:mm")})
+                        }
+
+                        truthVar=false;
+                        
+                        
                     }}
                     />
                     <p style={{paddingTop:0, marginTop:0 }}>{val+":"+min}</p>
@@ -451,11 +498,15 @@ const SpecBooking = () => {
                 </div>
                 )
                 } 
-                </div> : true
-            }
+                </div>
+                </Tooltip>
+                <Tooltip placement='bottom' visible={lastToolVisible} title="Select a time slot using this pane">
+
+                </Tooltip>
 
         
             </Card>
+}
             </Col>
         </Row>
     </div>

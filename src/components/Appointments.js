@@ -39,7 +39,7 @@ const Appointment = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        fetch(("http://localhost:8000/appointments/" + usedId), {
+        fetch(("http://192.168.2.179:8000/appointments/" + usedId), {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ const Appointment = () => {
             message.info('Successfully cancelled an appointment');
             console.log("This is what's returned after deleting a record", results)
             setIsPending(false);
-            fetch("http://localhost:8000/appointments")
+            fetch("http://192.168.2.179:8000/appointments")
             .then(res => res.json())
             .then(data => {
               setData(data);
@@ -143,7 +143,7 @@ const Appointment = () => {
   // const {setData, data, isPending} = useFetch('http://localhost:8000/appointments');
 
     useEffect(() => {
-      fetch("http://localhost:8000/appointments")
+      fetch("http://192.168.2.179:8000/appointments")
       .then(res => res.json())
       .then(results => {
         setData(results);

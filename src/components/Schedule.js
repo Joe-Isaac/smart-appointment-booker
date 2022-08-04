@@ -57,7 +57,7 @@ const Schedule = () => {
 
 
     useEffect(()=>{
-    fetch("http://localhost:8000/appointments")
+    fetch("http://192.168.2.179:8000/appointments")
     .then(res => res.json())
     .then(data => {
       setRawData(data)

@@ -7,7 +7,7 @@ import useFetch from '../useFetch';
 const Patientrecord = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [editing, setEditing] = useState(null);
-    const {setData, data, isPending} = useFetch('http://localhost:8000/patient_records')
+    const {setData, data, isPending} = useFetch('http://192.168.2.179:8000/patient_records')
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
