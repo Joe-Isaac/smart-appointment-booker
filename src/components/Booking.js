@@ -31,6 +31,9 @@ const SpecBooking = () => {
     const [display, setDisplay] = useState(false);
     const [visibleTime, setVisibleTime] = useState(true);
     const [lastToolVisible, setlastToolVisible] = useState(true);
+    const [timeVisible, setTimeVisible] = useState(true);
+    const [newTimeDeterminer, setNewTimeDeterminer] = useState(false);
+    const [newerTimeDeterminer, setNewerTimeDeterminer] = useState(false);
     let hour = [];
     let min = [];
     const config = {
@@ -166,6 +169,7 @@ const SpecBooking = () => {
             form.resetFields()
             setDepDisable(false);
             setDateState(true);
+            setTimeVisible(true);
             message.info("Successfully scheduled an appointment")
         })
         .catch(error => message.error(error.message))
@@ -256,6 +260,7 @@ const SpecBooking = () => {
         setSelectedDate(date)
         form.setFieldsValue({"appointmentTime": ''})
         setDisplay(true);
+        setTimeVisible(false);
 
         rawData.map(val => {
             if(val.name === docSelect){
@@ -334,24 +339,24 @@ const SpecBooking = () => {
         <Form form={form} layout='vertical' onFinish={onFinish}>
             {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="name" label="first name" {...config}>
+                    <Form.Item name="name" style={{width: 185}} label="first name" {...config}>
                         <Input/>
                     </Form.Item>
-                    <Form.Item name="second-name" label="second name" {...config}>
+                    <Form.Item name="second-name" style={{width: 185}} label="second name" {...config}>
                         <Input/>
                     </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="third-name" label="last name" {...config}>
+                    <Form.Item name="third-name" style={{width: 185}} label="last name" {...config}>
                         <Input/>
                     </Form.Item>
                     
-                    <Form.Item name='dob' label="Date of birth" {...config}>
-                        <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 180}}/>
+                    <Form.Item name='dob' style={{width: 185}} label="Date of birth" {...config}>
+                        <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 185}}/>
                     </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="phoneNumber" label="Phone number" {...config}>
+                    <Form.Item name="phoneNumber" style={{width: 185}} label="Phone number" {...config}>
                         <InputNumber style={{width: 185}}/>
                         </Form.Item>
                     <Form.Item name="clinic" label="Clinics" {...config} style={{width: 185}}>
@@ -361,18 +366,32 @@ const SpecBooking = () => {
                     </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="doctor" label="Doctor" {...config}>
+                    <Form.Item name="doctor" style={{width: 185}} label="Doctor" {...config}>
                         {<Select value={docSelect} onChange={createDoc}
-                        defaultValue={"select doctor to see"} style={{width: 180}}>
+                        defaultValue={"select doctor to see"} style={{width: 185}}>
                         {doc && doc.map(val => <Option value={val}>{val}</Option>)}
                         </Select>}
                     </Form.Item>
-                    <Tooltip title="This part is disabled, enter date to activate time selection pane">
-                    <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
-                        <Input disabled={true} style={{color:"blue"}}/>
+
+                    <Tooltip visible={newTimeDeterminer} onMouseEnter={() => {
+                        setNewTimeDeterminer(timeVisible);
+                    }} onMouseLeave={()=>setNewTimeDeterminer(false)} title="This part is disabled, enter date to activate time selection pane">
+
+                    <Tooltip visible={newerTimeDeterminer} onMouseEnter={()=>{
+                        setNewerTimeDeterminer(!timeVisible)
+                    }}
+                    onMouseLeave={()=>{setNewerTimeDeterminer(false)}} 
+                    title="Enter time using the time selection pane">
+                    <Form.Item name='appointmentTime' style={{width: 185}} label="Time of appointment" {...config}>
+                
+
+                                <Input disabled={true} style={{color:"blue"}}/>
+
+                    
                         
                         
                     </Form.Item>
+                    </Tooltip>
                     </Tooltip>
 
             </Row>
@@ -384,8 +403,8 @@ const SpecBooking = () => {
                 
                 }} 
                     onMouseLeave={()=>setToolVisible(false)} title="Date selection is disabled, please select doctor first">
-                    <Form.Item name='appointmentDate' label="Date of appointment" {...config}>
-                        <DatePicker disabled={dateState}
+                    <Form.Item name='appointmentDate' style={{width: 185}} label="Date of appointment" {...config}>
+                        <DatePicker style={{width: 185}} disabled={dateState}
                         disabledTime={DisabledTime}
                         onChange={newFunc}
                         allowClear={true}
@@ -432,7 +451,7 @@ const SpecBooking = () => {
                 }, 1000)
 
             }}
-            title="Green means available slot, red means it's taken."><div>{
+            title="Select time slot using this pane"><div>{
                 enabledHours.map(val => <div style={{display:'flex', flexDirection: 'row',
                 justifyContent: 'space-between'}}>
                     {
@@ -448,7 +467,7 @@ const SpecBooking = () => {
                                         newdate.time.map(realtime => {
                                             
                                             if(moment(realtime, "HH:mm").format("HH:mm") === moment(val + ":" + min, "HH:mm").format("HH:mm")){
-                                                color="#f5222d";
+                                                color="#fa541c";
                                                 console.log("the time has been changed", newdate.time);
                                                 realerTime.push(realtime);
                                             }
@@ -471,7 +490,6 @@ const SpecBooking = () => {
                         height: 15,
                     }} color={color}
                     onClick={()=>{
-                        console.log("This is realer time before looping", realerTime)
                         realerTime.map(real => {
                         if(moment(real, "HH:mm").format("HH:mm") === moment(allTime, "HH:mm").format("HH:mm")){
                             message.error("Cannot select a taken slot")
@@ -497,11 +515,20 @@ const SpecBooking = () => {
 })}
                 </div>
                 )
-                } 
+                }
+                    <br/>
+                    <Tag style={{
+                        width: 15,
+                        height: 15,
+                    }} color="#fa541c"/>
+                    Means slot unavailable
+                    <br/>
+                    <Tag style={{
+                        width: 15,
+                        height: 15,
+                    }} color="#52c41a"/>
+                    Means slot is available
                 </div>
-                </Tooltip>
-                <Tooltip placement='bottom' visible={lastToolVisible} title="Select a time slot using this pane">
-
                 </Tooltip>
 
         

@@ -224,7 +224,9 @@
             "13:00",
             "14:00",
             "15:00",
-            "12:20"
+            "12:20",
+            "14:20",
+            "16:00"
           ]
         },
         {
@@ -500,32 +502,6 @@
       "id": 8
     },
     {
-      "name": "huhu",
-      "second-name": "mumu",
-      "third-name": "sdsd",
-      "dob": "2022-08-14",
-      "phoneNumber": 333,
-      "clinic": "oncology",
-      "doctor": "Katie McCath",
-      "appointmentTime": "14:20",
-      "appointmentDate": "2022-08-21",
-      "room": "A02",
-      "id": 9
-    },
-    {
-      "name": "yy",
-      "second-name": "zz",
-      "third-name": "qq",
-      "dob": "1956-03-01",
-      "phoneNumber": 712345678,
-      "clinic": "dental",
-      "doctor": "Moses Bilal",
-      "appointmentTime": "14:40",
-      "appointmentDate": "2022-08-21",
-      "room": "A04",
-      "id": 10
-    },
-    {
       "name": "tt",
       "second-name": "aewe",
       "third-name": "dg",
@@ -537,6 +513,45 @@
       "appointmentDate": "2022-08-21",
       "room": "A02",
       "id": 11
+    },
+    {
+      "name": "nkn",
+      "second-name": "nn",
+      "third-name": "nb",
+      "dob": "2022-08-01",
+      "phoneNumber": 5656,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "14:20",
+      "appointmentDate": "2022-08-21",
+      "room": "A02",
+      "id": 12
+    },
+    {
+      "name": "Jojo",
+      "second-name": "ewe",
+      "third-name": "doesnt matter either",
+      "dob": "1977-08-15",
+      "phoneNumber": 8,
+      "clinic": "dental",
+      "doctor": "Moses Bilal",
+      "appointmentTime": "17:20",
+      "appointmentDate": "2022-08-21",
+      "room": "A02",
+      "id": 13
+    },
+    {
+      "name": "Abdul",
+      "second-name": "uuu",
+      "third-name": "hhh",
+      "dob": "2022-08-01",
+      "phoneNumber": 65656,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "16:00",
+      "appointmentDate": "2022-08-21",
+      "room": "A04",
+      "id": 14
     }
   ],
   "clinics": [

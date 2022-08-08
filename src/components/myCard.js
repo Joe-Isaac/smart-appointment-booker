@@ -16,6 +16,7 @@ const MyList = () => {
                 size="small"
                 hoverable={true}
                 style={{
+                  boxShadow: '4px 10px 10px #f3f3f3',
                   backgroundColor: '',
                   width: 300,
                   borderRadius: 14,
@@ -39,6 +40,7 @@ const MyList = () => {
                 size="small"
                 hoverable={true}
                 style={{
+                  boxShadow: '4px 10px 10px #f3f3f3',
                   backgroundColor: '',
                   width: 300,
                   borderRadius: 14,
@@ -65,6 +67,7 @@ const MyList = () => {
                 size="small"
                 hoverable={true}
                 style={{
+                  boxShadow: '4px 10px 10px #f3f3f3',
                   backgroundColor: '',
                   width: 300,
                   borderRadius: 14,

@@ -1,9 +1,11 @@
 import React from 'react';
-import { Alert, DatePicker, Select, Space, TimePicker, Calendar, Card, Badge, Timeline, Row, Col, Modal, } from 'antd';
+import { Alert, DatePicker, Select, Space, TimePicker, Calendar, Card, Badge, Timeline, Row, Col, Modal, message, } from 'antd';
 import { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import moment from 'moment';
 import useFetch from '../useFetch';
+import { ClockCircleOutlined } from '@ant-design/icons';
+const myColors = ['red', 'blue', 'green', 'yellow', 'orange', 'brown', 'grey', 'purple', 'violet', 'indigo']
 
 const Schedule = () => {
     const { Option } = Select;
@@ -64,6 +66,11 @@ const Schedule = () => {
     }
   )
 }, []);
+
+
+const findColor = () => {
+  return myColors[Math.floor(Math.random() * myColors.length)];
+}
     
   return (
     <>
@@ -80,10 +87,24 @@ const Schedule = () => {
     </Card>
     </Col>
     <Col span={6}>
-      {timelineVisibility && <Timeline mode={"alternate"} style={{width: 300}}>
-        {myvalue.map(val => <Timeline.Item>{val.map(item =>
-        <p style={{padding: 0, margin: 0}}>
+      {timelineVisibility && <Timeline mode='alternate' style={{width: 300, marginTop: 50}}>
+        {myvalue.map(val => <Timeline.Item
+        dot={<ClockCircleOutlined/>}
+        color={findColor()}
+        style={{
+          margin: 15,
+          padding: 3
+          }}>
+            <Card hoverable={true}
+            style={{
+              border:0,
+              boxShadow: '1px 2px 1px 1px #f3f3f3',
+            }}
+            >
+          {val.map(item =>
+        <p style={{padding: 0, margin: 0, fontSize: 13}}>
           {item}</p>)}
+          </Card>
           </Timeline.Item>)}
       </Timeline>}
     </Col>
