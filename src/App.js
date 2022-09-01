@@ -87,12 +87,7 @@ const updateUsers = () => {
           }}
         >
           {updateUsers()}
-          {}
             <Outlet/>
-          {/**
-          {!patientHidden? <Patientrecord/>: null}
-          {!dashHidden? <Dashboard/>: null}
-          {!doctorHidden? <Doctor/>: null} **/}
         </Content>
       </Layout>
     </Layout>

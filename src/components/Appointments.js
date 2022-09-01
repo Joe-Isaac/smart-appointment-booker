@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import {Table, Button, Input, Modal, Card, Spin, message} from 'antd';
+import {Table, Button, Input, Modal, Card, Spin, message, Form, DatePicker} from 'antd';
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import useFetch from '../useFetch';
@@ -10,6 +10,7 @@ const Appointment = () => {
     const [editing, setEditing] = useState(null);
     const [data, setData] = useState();
     const [isPending, setIsPending] = useState(true);
+    const [docData, setDocData] = useState([]);
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
@@ -55,7 +56,9 @@ const Appointment = () => {
             .then(res => res.json())
             .then(data => {
               setData(data);
+              console.log("This is the doc data", data)
             })
+            .catch(err => console.log(err.message))
     })
       }
     })
@@ -125,7 +128,7 @@ const Appointment = () => {
       <div>
       <div>
       <EditOutlined onClick={() => {
-        //editUser(record);
+        editUser(record);
       }}/>
       Reschedule 
       </div>
@@ -147,8 +150,14 @@ const Appointment = () => {
       .then(res => res.json())
       .then(results => {
         setData(results);
-        console.log("Testing to see whether this code refires")
+        console.log("results", results)
         setIsPending(false);
+      })
+
+      fetch("http://192.168.2.179:8000/doctors")
+      .then(response => response.json())
+      .then(data => {
+
       })
 
       return ()=>console.log("useEffect destroyed")
@@ -178,38 +187,30 @@ const Appointment = () => {
             onCancel={() => setIsVisible(false)}
             closable={true}
             okText={'save'}>
-                <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Name</label>
-                <Input style={{margin: 8, borderRadius: 5,}}value={editing?.name} onChange={
-                  (e) => {
-                    setEditing(pre=>{
-                      return {...pre, name:e.target.value}
-                    })
-                  }
-                }/>
-                <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Gender</label>
-                <Input style={{margin: 8, borderRadius: 5,}} value={editing?.gender} onChange={
-                  (e) => {
-                    setEditing(pre=>{
-                      return {...pre, gender:e.target.value}
-                    })
-                  }
-                }/>
-                <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Email</label>
-                <Input style={{margin: 8, borderRadius: 5,}}value={editing?.email} onChange={
-                  (e) => {
-                    setEditing(pre=>{
-                      return {...pre, email:e.target.value}
-                    })
-                  }
-                }/>
-                <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Address</label>
-                <Input style={{margin: 8, borderRadius: 5,}} value={editing?.address} onChange={
-                  (e) => {
-                    setEditing(pre=>{
-                      return {...pre, address:e.target.value}
-                    })
-                  }
-                }/>
+                <Card hoverable={true}>
+                <Form style={{textAlign: 'center', display:'flex', flexDirection:'column',
+              alignItems:'center'}}>
+                  <Form.Item style={{width: 300}}>
+                    Name
+                    <Input disabled/>
+                  </Form.Item>
+                  <Form.Item style={{width: 300}}>
+                    Age
+                    <Input disabled/>
+                  </Form.Item>
+                  <Form.Item style={{width: 300}}>
+                    Phone Number
+                    <Input/>
+                  </Form.Item>
+                  <label>
+                    current date
+                  </label>
+                  <Form.Item style={{width: 300}}>
+                    Edit date
+                    <DatePicker/>
+                  </Form.Item>
+                </Form>
+                </Card>
             </Modal>
             <div style={{border: '1px', borderStyle: 'solid', borderColor: '#f3f3f3', width: 'fit-content', padding: '4px', backgroundColor: '#1890ff'}}><Link style={{color:'white', fontFamily: 'calibri', fontWeight:30, fontSize: 16}} to='/Booking'>Create new Appointment</Link></div>
               {data && <Table

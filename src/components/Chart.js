@@ -2,36 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Pie } from '@ant-design/plots';
 
 const MyPie = () => {
-    const data = [
-        {
-          type: '0-4 yrs',
-          value: 100,
-        },
-        {
-          type: '5-10 yrs',
-          value: 109,
-        },
-        {
-          type: '10-18 yrs',
-          value: 87,
-        },
-        {
-          type: '19-29 yrs',
-          value: 75,
-        },
-        {
-          type: '30-45 yrs',
-          value: 150,
-        },
-        {
-          type: '45-70 yrs',
-          value: 120,
-        },
-        {
-          type: '71yrs and above',
-          value: 74,
-        }
-      ];
+  const [data, setData] = useState([])
+
+  useEffect(()=>{
+    fetch('http://192.168.2.179:8000/pie')
+    .then(res => res.json())
+    .then(intel => setData(intel))
+    .catch(err => alert(err.message))
+  },[])
+  
   const config = {
     appendPadding: 10,
     data,

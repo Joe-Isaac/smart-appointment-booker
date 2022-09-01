@@ -3,7 +3,7 @@
     {
       "id": "1",
       "name": "Joey Brad",
-      "gender": "male",
+      "gender": "",
       "email": "jb@example.com",
       "specialty": "physician",
       "clinic": "urology",
@@ -226,7 +226,8 @@
             "15:00",
             "12:20",
             "14:20",
-            "16:00"
+            "16:00",
+            "08:00"
           ]
         },
         {
@@ -262,6 +263,12 @@
           "date": "2022-08-03",
           "time": [
             "08:00"
+          ]
+        },
+        {
+          "date": "2022-08-31",
+          "time": [
+            "12:20"
           ]
         }
       ]
@@ -401,68 +408,6 @@
   ],
   "appointments": [
     {
-      "name": "jhh",
-      "second-name": "nnn",
-      "third-name": "jjj",
-      "dob": "2022-08-01",
-      "phoneNumber": 878,
-      "clinic": "cardiology",
-      "doctor": "Rosebell Mohammed",
-      "appointmentDate": "2022-08-03 08:00",
-      "room": "A02",
-      "id": 1
-    },
-    {
-      "name": "Abdul",
-      "second-name": "dd",
-      "third-name": "j",
-      "dob": "2022-08-02",
-      "phoneNumber": 88,
-      "clinic": "cardiology",
-      "doctor": "Rosebell Mohammed",
-      "appointmentDate": "2022-08-03 08:00",
-      "room": "A04",
-      "id": 2
-    },
-    {
-      "name": "nhuhuh",
-      "second-name": "dd",
-      "third-name": "dd",
-      "dob": "2022-08-07",
-      "phoneNumber": 45,
-      "clinic": "dental",
-      "doctor": "Moses Bilal",
-      "appointmentDate": "2022-08-22 09:00",
-      "room": "A01",
-      "id": 3
-    },
-    {
-      "name": "Abby",
-      "second-name": "Gail",
-      "third-name": "Ybbie",
-      "dob": "1978-04-29",
-      "phoneNumber": 712345678,
-      "clinic": "dental",
-      "doctor": "Moses Bilal",
-      "appointmentTime": "14:20",
-      "appointmentDate": "2022-08-21 12:14",
-      "room": "A01",
-      "id": 4
-    },
-    {
-      "name": "Abby",
-      "second-name": "Gail",
-      "third-name": "Ybbie",
-      "dob": "2022-08-09",
-      "phoneNumber": 56556,
-      "clinic": "dental",
-      "doctor": "Moses Bilal",
-      "appointmentTime": "14:20",
-      "appointmentDate": "2022-08-21",
-      "room": "A02",
-      "id": 5
-    },
-    {
       "name": "Ybbie",
       "second-name": "Gail",
       "third-name": "Abby",
@@ -552,6 +497,32 @@
       "appointmentDate": "2022-08-21",
       "room": "A04",
       "id": 14
+    },
+    {
+      "name": "Abdul",
+      "second-name": "Abdul",
+      "third-name": "Abdul",
+      "dob": "2022-08-07",
+      "phoneNumber": 77777777,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "08:00",
+      "appointmentDate": "2022-08-21",
+      "room": "A01",
+      "id": 15
+    },
+    {
+      "name": "Abdul",
+      "second-name": "Mahmoud",
+      "third-name": "Mohammed",
+      "dob": "1999-06-08",
+      "phoneNumber": 789877875,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "12:20",
+      "appointmentDate": "2022-08-31",
+      "room": "A02",
+      "id": 16
     }
   ],
   "clinics": [
@@ -606,6 +577,36 @@
       "roomType": "ICU",
       "roomStatus": "Unavailable",
       "roomSchedule": ""
+    }
+  ],
+  "pie": [
+    {
+      "type": "0-4 yrs",
+      "value": 100
+    },
+    {
+      "type": "5-10 yrs",
+      "value": 109
+    },
+    {
+      "type": "10-18 yrs",
+      "value": 87
+    },
+    {
+      "type": "19-29 yrs",
+      "value": 75
+    },
+    {
+      "type": "30-45 yrs",
+      "value": 150
+    },
+    {
+      "type": "45-70 yrs",
+      "value": 120
+    },
+    {
+      "type": "71yrs and above",
+      "value": 74
     }
   ]
 }
