@@ -165,7 +165,6 @@ const DoctorRecords = () => {
             />
             }
             {isPending && <div><Spin size='default'/><p style={{fontSize: '20px'}}>Loading...</p></div>}
-            {console.log(data, 'shows me the data')}
             
       </>
   )

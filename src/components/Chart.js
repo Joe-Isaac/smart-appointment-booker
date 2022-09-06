@@ -5,7 +5,7 @@ const MyPie = () => {
   const [data, setData] = useState([])
 
   useEffect(()=>{
-    fetch('http://192.168.2.179:8000/pie')
+    fetch('http://localhost:8000/pie')
     .then(res => res.json())
     .then(intel => setData(intel))
     .catch(err => alert(err.message))

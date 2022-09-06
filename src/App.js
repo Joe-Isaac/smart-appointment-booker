@@ -45,16 +45,16 @@ const updateUsers = () => {
     <Layout>
       <Sider width={220} trigger={null} collapsed={collapsed} collapsible className="site-layout-background">
         <Menu mode='inline'>
-          <Menu.Item><DashboardOutlined style={{marginRight: '3px'}}/><Link to='/Dashboard'>Main Dashboard</Link></Menu.Item>
-          <Menu.Item><UserOutlined style={{marginRight: '3px'}}/><Link to='/Patient__record'>Patient Details</Link></Menu.Item>
-          <Menu.SubMenu title="Doctors">
-            <Menu.Item><DashboardOutlined style={{marginRight: '3px'}}/><Link to='/Doctor'>Doctor's dashboard</Link></Menu.Item>
-            <Menu.Item><ScheduleOutlined style={{marginRight: '3px'}}/><Link to="/Schedule">Doctor's schedule</Link></Menu.Item>
-            <Menu.Item><OrderedListOutlined style={{marginRight: '3px'}}/><Link to='/DoctorRecords'>Doctor's records</Link></Menu.Item>
-          </Menu.SubMenu>
-          <Menu.Item><UserAddOutlined style={{marginRight: '3px'}}/><Link to='/Booking'>Make Appointment</Link></Menu.Item>
-          <Menu.Item><DatabaseOutlined style={{marginRight: '3px'}}/><Link to='/Appointments'>Appointments</Link></Menu.Item>
-          <Menu.Item><EditOutlined style={{marginRight: '3px'}}/><Link to='/RoomAllocation'>Room Allocation</Link></Menu.Item>
+          <Menu.Item key={1}><DashboardOutlined style={{marginRight: '3px'}}/><Link to='/Dashboard'>Main Dashboard</Link></Menu.Item>
+          <Menu.Item key={2}><UserOutlined style={{marginRight: '3px'}}/><Link to='/Patient__record'>Patient Details</Link></Menu.Item>
+          <Menu.SubMenu title="Doctors" key={9}>
+            <Menu.Item key={3}><DashboardOutlined style={{marginRight: '3px'}}/><Link to='/Doctor'>Doctor's dashboard</Link></Menu.Item>
+            <Menu.Item key={4}><ScheduleOutlined style={{marginRight: '3px'}}/><Link to="/Schedule">Doctor's schedule</Link></Menu.Item>
+            <Menu.Item key={5}><OrderedListOutlined style={{marginRight: '3px'}}/><Link to='/DoctorRecords'>Doctor's records</Link></Menu.Item>
+          </Menu.SubMenu >
+          <Menu.Item key={6}><UserAddOutlined style={{marginRight: '3px'}}/><Link to='/Booking'>Make Appointment</Link></Menu.Item>
+          <Menu.Item key={7}><DatabaseOutlined style={{marginRight: '3px'}}/><Link to='/Appointments'>Appointments</Link></Menu.Item>
+          <Menu.Item key={8}><EditOutlined style={{marginRight: '3px'}}/><Link to='/RoomAllocation'>Room Allocation</Link></Menu.Item>
         </Menu>
       </Sider>
       <Layout
@@ -62,21 +62,7 @@ const updateUsers = () => {
           padding: '0 24px 24px',
         }}
       >
-        <Breadcrumb
-          style={{
-            margin: '16px 0',
-          }}
-        >
-          <div style={{marginRight: 4, color: '#000'}}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: 'trigger',
-            onClick: () => setCollapsed(!collapsed),
-          })}
-          </div>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
+        
         <Content
           className="site-layout-background"
           style={{

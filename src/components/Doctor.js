@@ -1,21 +1,52 @@
-import { Card, Col, Row } from 'antd';
-import React, { useEffect } from 'react';
+import { Card, Col, Row, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
 import '../assets/doctor.css';
 import { TeamOutlined, BookOutlined, GlobalOutlined, GiftOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import DemoColumn from './EmpLegend';
 import MyDonut from './MyDonut';
+import moment from 'moment';
 
 const Doctor = () => {
-  
+  const [birthday, setBirthday] = useState([]);
+  let bMonth = '';
+  const [visible, setVisible] = useState(false);
+  let response = [];
+
+  useEffect(()=>{
+    let theBirthday = '';
+    async function getBirthday(){
+      theBirthday = await fetch('http://localhost:8000/doctors');
+      response = await theBirthday.json();
+      response.map(doc => {
+        setBirthday(val => [...val, moment(doc.dob, "YYYY-MM-DD").format('MM-DD')]);
+      })
+    }
+
+    getBirthday();
+  }, [])
+
+  if(birthday){
+    bMonth=''
+    birthday.map(days => {
+    if(moment().format('MM') === moment(days, "MM-DD").format('MM')){
+          bMonth =+ 1;
+    }
+  })}
+
+
   return (
     <div className='container'>
+      {<Modal visible={visible} onCancel={()=>setVisible(false)} onOk={()=>setVisible(false)}>
+        <>Building in progress</>
+      </Modal>}
       <Row className='smallCards'>
           <Col span={4}>
-          <Card
+         { <Card
+          onClick={()=>setVisible(true)}
           hoverable={true}
           style={{fontSize: '18px', height: 100, borderRadius: '8px', marginRight: 8, boxShadow: '4px 4px 10px #f3f3f3', backgroundColor: '#ffe7ba' }}
           ><GiftOutlined /> Birthdays
-          <p style={{fontSize: '13px', fontFamily: 'calibri', marginTop: 12}}>4 this month</p></Card>
+          <p style={{fontSize: '13px', fontFamily: 'calibri', marginTop: 12}}>{bMonth} this month</p></Card>}
           </Col>
           <Col span={4}>
           <Card

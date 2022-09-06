@@ -47,10 +47,8 @@ const Schedule = () => {
     const onSelect = (value) => {
       setTimelineVisibility(false);
       setmyvalue([]);
-        console.log("This is the value that has been selected", moment(value).format("YYYY-MM-DD"))
         for(let i=0; i<rawData.length; i++){
         if(moment(value).format("YYYY-MM-DD") === moment(rawData[i].appointmentDate).format("YYYY-MM-DD")){
-          console.log("Now Im about to print out the details of a patient's appointment", rawData[i])
           setmyvalue(val => [...val, [(rawData[i].appointmentTime), rawData[i].name, (moment().format("YYYY")-(moment(rawData[i].dob).format("YYYY"))+" years old"), rawData[i].department, rawData[i].appointmentDate]])
           setTimelineVisibility(true);
         }
@@ -59,7 +57,7 @@ const Schedule = () => {
 
 
     useEffect(()=>{
-    fetch("http://192.168.2.179:8000/appointments")
+    fetch("http://localhost:8000/appointments")
     .then(res => res.json())
     .then(data => {
       setRawData(data)
@@ -73,10 +71,7 @@ const findColor = () => {
 }
     
   return (
-    <>
-    <br/>
-    <br/>
-    <br/>
+    <div style={{marginTop: 10}}>
     <Row style={{display: 'flex'}}>
     <Col span={18}>
     <Card style={{backgroundColor: '#f9f0ff'}} hoverable>
@@ -87,7 +82,7 @@ const findColor = () => {
     </Card>
     </Col>
     <Col span={6}>
-      {timelineVisibility && <Timeline mode='alternate' style={{width: 300, marginTop: 50}}>
+      {timelineVisibility && <Timeline mode='alternate'>
         {myvalue.map(val => <Timeline.Item
         dot={<ClockCircleOutlined/>}
         color={findColor()}
@@ -108,12 +103,9 @@ const findColor = () => {
           </Timeline.Item>)}
       </Timeline>}
     </Col>
-    {/* <Modal visible={open} onOk={() => setOpen(false)} onCancel={()=>setOpen(false)}>
-      <p>timeline could go here</p>
-      <p>timeline could go here</p>
-    </Modal> */}
+    
     </Row>
-    </>
+    </div>
   );
 };
 

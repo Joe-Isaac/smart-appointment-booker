@@ -24,7 +24,7 @@ const RoomAllocation = () => {
         dataIndex: 'roomSchedule',
     },];
 
-    const {setData, data, isPending} = useFetch('http://192.168.2.179:8000/room_allocation')
+    const {setData, data, isPending} = useFetch('http://localhost:8000/room_allocation')
 
   return (
     <div>

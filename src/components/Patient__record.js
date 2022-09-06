@@ -7,7 +7,7 @@ import useFetch from '../useFetch';
 const Patientrecord = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [editing, setEditing] = useState(null);
-    const {setData, data, isPending} = useFetch('http://192.168.2.179:8000/patient_records')
+    const {setData, data, isPending} = useFetch('http://localhost:8000/patient_records')
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
@@ -27,7 +27,6 @@ const Patientrecord = () => {
   const editUser = (record) => {
     setIsVisible(true);
     setEditing({...record});
-    console.log(record, " is the record at edit user")
   }
   
   const deleteUser = (record) => {
@@ -71,7 +70,6 @@ const Patientrecord = () => {
       return <>
       <EditOutlined onClick={() => {
         editUser(record);
-        console.log(record, " is the value passed when you click here")
       }}/>
       <DeleteOutlined onClick={() => {
         deleteUser(record);
@@ -104,7 +102,7 @@ const Patientrecord = () => {
             closable={true}
             okText={'save'}>
               <Form>
-                <Form.Item name={"name"}>
+                <Form.Item key={1} name={"name"}>
                 <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Name</label>
                 <Input style={{margin: 8, borderRadius: 5,}}value={editing?.name} onChange={
                   (e) => {
@@ -114,7 +112,7 @@ const Patientrecord = () => {
                   }
                 }/>
                 </Form.Item>
-                <Form.Item name={"gender"}>
+                <Form.Item key={2} name={"gender"}>
                 <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Gender</label>
                 <Input style={{margin: 8, borderRadius: 5,}} value={editing?.gender} onChange={
                   (e) => {
@@ -124,7 +122,7 @@ const Patientrecord = () => {
                   }
                 }/>
                 </Form.Item>
-                <Form.Item>
+                <Form.Item key={3}>
                 <label style={{width: 8, marginBottom: 3, marginLeft: 25}}>Email</label>
                 <Input style={{margin: 8, borderRadius: 5,}}value={editing?.email} onChange={
                   (e) => {

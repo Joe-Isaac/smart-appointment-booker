@@ -1,11 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { Input, Form, Card, DatePicker, Select, Row, Button, Alert,  message, InputNumber, Cascader, TimePicker, Tooltip, Col, Badge, Tag} from 'antd';
+import { Input, Form, Card, DatePicker, Select, Row, Button,  message, InputNumber, Tooltip, Col, Tag} from 'antd';
 import moment from 'moment';
-import Appointment from './Appointments'
-import useFetch from '../useFetch';
-import Operation from 'antd/lib/transfer/operation';
-import { CheckCircleOutlined, CheckCircleFilled, } from '@ant-design/icons';
-import { toBeEnabled } from '@testing-library/jest-dom/dist/matchers';
 
 const SpecBooking = () => {
     const [form] = Form.useForm();
@@ -36,6 +31,8 @@ const SpecBooking = () => {
     const [newerTimeDeterminer, setNewerTimeDeterminer] = useState(false);
     let hour = [];
     let min = [];
+    let count = 0;
+    let timeArray = [];
     const config = {
         rules: [
             {
@@ -44,26 +41,7 @@ const SpecBooking = () => {
             },
         ],
     };
-    // fetch('http://localhost:8000/doctors')
-    //      .then(res => res.json)
-    //      .then(data => {
-    //         console.log("some data was fetched here successfully", data);
-    //     })
-    // //     .catch(err => console.log("error ", err))
-    // const {data, isPending, setData} = useFetch("http://localhost:8000/doctors");
-    function makeDate(data){
-        console.log(data);
-    }
     
-
-    // const disableTime = (now) => {
-    //     if (moment(now).format("HH:mm") < moment().format("HH:mm")){
-    //         return{
-    //             disabledHours: () => 12,
-    //             disabledMinuutes: () => 10
-    //         };
-    //     }
-    // }
 
 
     const disabledDatedd = (current) => { 
@@ -103,11 +81,11 @@ const SpecBooking = () => {
 
 
     useEffect(()=>{
-        fetch("http://192.168.2.179:8000/doctors")
+        fetch("http://localhost:8000/doctors")
         .then(res => res.json())
         .then(data => {
             setRawData(data);
-            data.map(value => {setDoc(val => [...val, value.name])})
+            data.map(value => {setDoc(val => [...val, value])})
             for(let i=0; i<data.length; i++){
 
                 for(let j=0; j<data[i].unavailable.length; j++){
@@ -116,17 +94,16 @@ const SpecBooking = () => {
                 }
             }
         })
-        .catch(err => console.log(err.message))
+        .catch(err => message.error(err.message))
 
-        fetch("http://192.168.2.179:8000/clinics")
+        fetch("http://localhost:8000/clinics")
         .then(res => res.json())
         .then(results => {
         setClinics(results);
-        console.log("Clinics fetched", results)
         })
 
 
-        fetch("http://192.168.2.179:8000/appointments")
+        fetch("http://localhost:8000/appointments")
         .then(res => res.json())
         .then(data => {
             setAppointmentDate(data);
@@ -142,23 +119,17 @@ const SpecBooking = () => {
         form.setFieldsValue({"doctor": "select doctor to see"});
         for(let i=0; i<rawData.length; i++){
                 if(rawData[i].clinic === clin){
-                    console.log("Match has been found", rawData[i].name);
-                    setDoc(val => [...val, rawData[i].name])
+                    setDoc(val => [...val, rawData[i]])
                 }
         }
     }
-    // const selector = () => {
-    //     setDoc(docDep);
-    //     console.log(doc, "is the value of the selected")
-    //     setDateState(false);
-    // }
     
     const onFinish = (data) => {
             data.appointmentDate = moment(data.appointmentDate).format("YYYY-MM-DD");
             data.dob = moment(data.dob).format("YYYY-MM-DD");
             data.appointmentTime = moment(data.appointmentTime, "HH:mm").format("HH:mm");
             //console.log('This is where I collect the data', data);
-            fetch("http://192.168.2.179:8000/appointments", {
+            fetch("http://localhost:8000/appointments", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -181,14 +152,12 @@ const SpecBooking = () => {
 
 
 
-        fetch("http://192.168.2.179:8000/doctors?name="+data.doctor)
+        fetch("http://localhost:8000/doctors?name="+data.doctor)
         .then(response => response.json())
         .then(results => {
-            console.log("lllllllllllllll doctor", results)
              let truth = false;
         //     console.log('Successfully acquired this data from the doctors profile',results)
              let operatingData = results[0];
-             console.log("This is the copy variable", operatingData);
                  operatingData.booked.map(d => {
                      if(moment(data.appointmentDate, "YYYY-MM-DD").format("YYYY-MM-DD") === d.date){
                          d.time.push(moment(data.appointmentTime, "HH:mm").format("HH:mm"))
@@ -206,15 +175,14 @@ const SpecBooking = () => {
                     );
                     //console.log("If the date didnt match, this is the result", operatingData);
                 }
-                fetch("http://192.168.2.179:8000/doctors/"+operatingData.id, {
+                fetch("http://localhost:8000/doctors/"+operatingData.id, {
                     method: 'PUT',
                     headers: {
                         'content-Type': 'application/json'
                     },
                     body:JSON.stringify(operatingData)
                 }).then( val => {
-                    console.log("1st Promise resolved", val);
-                    fetch("http://192.168.2.179:8000/doctors")
+                    fetch("http://localhost:8000/doctors")
                         .then(res => res.json())
                         .then(data => {
                             setRawData(data);
@@ -222,7 +190,7 @@ const SpecBooking = () => {
             })
             .catch(error => message.error(error.message))
               })
-             .catch(err => console.log(err.message))
+             .catch(err => message.error(err.message))
 
 
 
@@ -231,7 +199,6 @@ const SpecBooking = () => {
 
     const createDoc = (value) => {
         setToolDeterminer(true);
-        console.log("This is the value that has been selected", value);
         setDocSelect(value);
         setDateState(false);
         setDepDisable(true);
@@ -243,17 +210,8 @@ const SpecBooking = () => {
     }
 
 
-    // useEffect(() => {
-    //   console.log("The value of docselect has changed") 
-    // }, [docSelect])
 
-    let timeArray = [];
     let dimeArray = [];
-
-
-    
-    let timeDisabled = [];
-    let disabledMinutes = [];
 
 
     const newFunc = (date) => {
@@ -273,46 +231,18 @@ const SpecBooking = () => {
                     det.time.map(t => {
                         
                         dimeArray.push(moment(t, "HH:mm").format("HH:mm"))
-                        console.log("Value pushed in the array is...", moment(t, "HH:mm").format("HH:mm"))
-                        // console.log("This is the second deepest level of the code", t)
-                        // console.log("This is the time selected", moment(date).format("HH"))
-                        // console.log("This is the time in hours of the appointed days for the selected doctor, in the database", moment(t, "HH:mm").format("HH"));
+                        
                          if(moment(date).format("HH") === moment(t, "HH:mm").format("HH")){
                             min.push(parseInt(moment(t, "HH:mm").format("mm")));
-                            //console.log("Minute pushed", min)
                             }
                         
                         })
                 }})
             }})
-                console.log("The array has these values", dimeArray);
                 timeArray = dimeArray;
         }
         
-        //myArr = [12, 13, 14, 15]
-
-    // const onChange = (val) => {
-    //     myArr=[];
-    //     console.log('This is the value returned by onchange', val)
-    //     rawData.map(name => {
-    //         if (name.name === docSelect){
-    //             console.log(name.booked)
-    //             if(moment(name.booked.date).format("YYYY-MM-DD") === moment(val).format("YYYY-MM-DD")){
-    //                 name.booked.time.map(newTime => {
-    //                     //console.log(newTime);
-    //                     console.log(moment(val).format("HH:mm"))
-    //                     if(newTime==(moment(val).format("HH:mm"))){
-    //                         console.log("The times are the same son")
-    //                         minArr.push(parseInt(moment(newTime, "HH:mm").format("mm")))
-    //                     }
-    //                     })
-    //                 }
-
-    //             }
-    //                 //The block above disables the dates
-                
-    //     }
-    // )}
+        
 
     const DisabledTime = () => {
         return {
@@ -334,42 +264,41 @@ const SpecBooking = () => {
         <Card
         style={{fontSize: '18px', height: 550, width:550, borderRadius: '8px',
          marginRight: 8, boxShadow: '4px 4px 10px #f3f3f3', backgroundColor: '#e6f7ff' }}
-        hoverable={true} getContainer={false} forceRender>
+        hoverable={true}>
             
         <Form form={form} layout='vertical' onFinish={onFinish}>
-            {console.log('This is the value of the values stored in the state variable', formData)}
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="name" style={{width: 185}} label="first name" {...config}>
+                    <Form.Item key={1} name="name" style={{width: 185}} label="first name" {...config}>
                         <Input/>
                     </Form.Item>
-                    <Form.Item name="second-name" style={{width: 185}} label="second name" {...config}>
+                    <Form.Item key={2} name="second-name" style={{width: 185}} label="second name" {...config}>
                         <Input/>
                     </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="third-name" style={{width: 185}} label="last name" {...config}>
+                    <Form.Item key={3} name="third-name" style={{width: 185}} label="last name" {...config}>
                         <Input/>
                     </Form.Item>
                     
-                    <Form.Item name='dob' style={{width: 185}} label="Date of birth" {...config}>
+                    <Form.Item key={4} name='dob' style={{width: 185}} label="Date of birth" {...config}>
                         <DatePicker allowClear={true} format="YYYY-MM-DD" style={{width: 185}}/>
                     </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="phoneNumber" style={{width: 185}} label="Phone number" {...config}>
+                    <Form.Item key={5} name="phoneNumber" style={{width: 185}} label="Phone number" {...config}>
                         <InputNumber style={{width: 185}}/>
                         </Form.Item>
-                    <Form.Item name="clinic" label="Clinics" {...config} style={{width: 185}}>
-                        <Select value={type} onChange={setValues} disabled={depDisable} defaultValue={"select clinic to visit"}>
-                        {clinics.map(val=>(<Option value={val.name}>{val.name}</Option>))}
+                    <Form.Item key={6} name="clinic" label="Clinics" {...config} style={{width: 185}}>
+                        <Select value={type} onChange={setValues} disabled={depDisable} initialvalue={"select clinic to visit"}>
+                        {clinics.map(val=>(<Option key={val.id} value={val.name}>{val.name}</Option>))}
                         </Select>
                     </Form.Item>
             </Row>
             <Row style={{display: 'flex', justifyContent:'space-between'}}>
-                    <Form.Item name="doctor" style={{width: 185}} label="Doctor" {...config}>
+                    <Form.Item key={7} name="doctor" style={{width: 185}} label="Doctor" {...config}>
                         {<Select value={docSelect} onChange={createDoc}
-                        defaultValue={"select doctor to see"} style={{width: 185}}>
-                        {doc && doc.map(val => <Option value={val}>{val}</Option>)}
+                        initialvalue={"select doctor to see"} style={{width: 185}}>
+                        {doc && doc.map(val => <Option key={val.id} value={val.name}>{val.name}</Option>)}
                         </Select>}
                     </Form.Item>
 
@@ -382,7 +311,7 @@ const SpecBooking = () => {
                     }}
                     onMouseLeave={()=>{setNewerTimeDeterminer(false)}} 
                     title="Enter time using the time selection pane">
-                    <Form.Item name='appointmentTime' style={{width: 185}} label="Time of appointment" {...config}>
+                    <Form.Item key={8} name='appointmentTime' style={{width: 185}} label="Time of appointment" {...config}>
                 
 
                                 <Input disabled={true} style={{color:"blue"}}/>
@@ -403,7 +332,7 @@ const SpecBooking = () => {
                 
                 }} 
                     onMouseLeave={()=>setToolVisible(false)} title="Date selection is disabled, please select doctor first">
-                    <Form.Item name='appointmentDate' style={{width: 185}} label="Date of appointment" {...config}>
+                    <Form.Item key={9} name='appointmentDate' style={{width: 185}} label="Date of appointment" {...config}>
                         <DatePicker style={{width: 185}} disabled={dateState}
                         disabledTime={DisabledTime}
                         onChange={newFunc}
@@ -411,24 +340,16 @@ const SpecBooking = () => {
                         disabledDate={disabledDatedd}/>
                     </Form.Item>
                     </Tooltip>
-                    <Form.Item name="room" label="Room" {...config} style={{width: 185}}>
-                        <Select value={typeTwo} onChange={setRoom} defaultValue={"Select room"}>
-                            <Option value={"A01"}>A02</Option>
-                            <Option value={"A02"}>A03</Option>
-                            <Option value={"A04"}>A04</Option>
+                    <Form.Item key={10} name="room" label="Room" {...config} style={{width: 185}}>
+                        <Select value={typeTwo} onChange={setRoom} initialvalue={"Select room"}>
+                            <Option key={1} value={"A01"}>A02</Option>
+                            <Option key={2} value={"A02"}>A03</Option>
+                            <Option key={3} value={"A04"}>A04</Option>
                         </Select>
                         </Form.Item>
             </Row>
-            <Row style={{display: 'flex', justifyContent:'space-between'}}>
-            {/* <Form.Item name='appointmentTime' label="Time of appointment" {...config}>
-                <TimePicker disabled={dateState} allowClear={true}
-                defaultValue={moment('08:00:00', 'HH:mm:ss')} minuteStep={15}
-                format="HH:mm:ss" disabledTime={DisabledTime}
-                // disabledMinutes: () => disabledMinutes,
-                />
-            </Form.Item> */}
-            </Row>
-            <Form.Item><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
+
+            <Form.Item key={11}><Button type='primary' htmlType='submit'>Book appointment</Button></Form.Item>
             
         </Form>
         
@@ -463,12 +384,10 @@ const SpecBooking = () => {
                             if(item.name === docSelect){
                                 item.booked.map(newdate => {
                                     if(newdate.date === moment(selectedDate).format("YYYY-MM-DD")){
-                                        console.log("This is where we print our time", newdate.time)
                                         newdate.time.map(realtime => {
                                             
                                             if(moment(realtime, "HH:mm").format("HH:mm") === moment(val + ":" + min, "HH:mm").format("HH:mm")){
                                                 color="#fa541c";
-                                                console.log("the time has been changed", newdate.time);
                                                 realerTime.push(realtime);
                                             }
 
@@ -481,11 +400,11 @@ const SpecBooking = () => {
                     
                         
                         let allTime = val+":"+min;
-                        console.log(allTime);
 
                     return(
                     <>
-                    <Tag style={{
+                    <Tag
+                     style={{ 
                         width: 15,
                         height: 15,
                     }} color={color}
@@ -500,7 +419,7 @@ const SpecBooking = () => {
                         })
 
                         if(truthVar === false){
-                            message.info("Date selected");
+                            message.info("Time selected");
                             form.setFieldsValue({"appointmentTime": moment(allTime, "HH:mm").format("HH:mm")})
                         }
 

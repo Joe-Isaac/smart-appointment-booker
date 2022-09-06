@@ -33,14 +33,13 @@ const Appointment = () => {
   }
   
   const deleteUser = (record) => {
-    console.log(record);
     let usedId = record.id
     Modal.confirm({
       title: "Are you sure you want to delete this record?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        fetch(("http://192.168.2.179:8000/appointments/" + usedId), {
+        fetch(("http://localhost:8000/appointments/" + usedId), {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,15 +49,13 @@ const Appointment = () => {
         .then(response => response.json)
         .then(results => {
             message.info('Successfully cancelled an appointment');
-            console.log("This is what's returned after deleting a record", results)
             setIsPending(false);
-            fetch("http://192.168.2.179:8000/appointments")
+            fetch("http://localhost:8000/appointments")
             .then(res => res.json())
             .then(data => {
               setData(data);
-              console.log("This is the doc data", data)
             })
-            .catch(err => console.log(err.message))
+            .catch(err => message.log(err.message))
     })
       }
     })
@@ -146,21 +143,20 @@ const Appointment = () => {
   // const {setData, data, isPending} = useFetch('http://localhost:8000/appointments');
 
     useEffect(() => {
-      fetch("http://192.168.2.179:8000/appointments")
+      fetch("http://localhost:8000/appointments")
       .then(res => res.json())
       .then(results => {
         setData(results);
-        console.log("results", results)
         setIsPending(false);
       })
 
-      fetch("http://192.168.2.179:8000/doctors")
+      fetch("http://localhost:8000/doctors")
       .then(response => response.json())
       .then(data => {
 
       })
 
-      return ()=>console.log("useEffect destroyed")
+      return ()=> true
     }, [])
 
     
