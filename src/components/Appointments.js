@@ -4,6 +4,8 @@ import {Table, Button, Input, Modal, Card, Spin, message, Form, DatePicker} from
 import { DeleteOutlined, EditOutlined,  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import useFetch from '../useFetch';
+import { formatCountdown } from 'antd/lib/statistic/utils';
+import moment from 'moment';
 
 const Appointment = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -11,6 +13,8 @@ const Appointment = () => {
     const [data, setData] = useState();
     const [isPending, setIsPending] = useState(true);
     const [docData, setDocData] = useState([]);
+    const [rawData, setRawData] = useState([]);
+    const [randomTruth, setRandomTruth] = useState(false);
 
   const addUser = () => {
     const randomVariable = parseInt(Math.random() * 1000);
@@ -154,11 +158,30 @@ const Appointment = () => {
       fetch("http://localhost:8000/doctors")
       .then(response => response.json())
       .then(data => {
-
+          setRawData(data);
       })
 
       return ()=> true
     }, [])
+
+    const onSelect = (current) => {
+      setRandomTruth(false);
+      rawData.map(docs => {
+          if(editing.doctor === docs.name){
+            
+            docs.booked.map(date => {
+              if (date.date === moment(current).format("YYYY-MM-DD")){
+                console.log("The date is in the db");
+                setRandomTruth(true);
+                return;
+              }
+            })
+        }
+      })
+      if(randomTruth === false){
+        console.log("The doctor doesnt have this day scheduled, create one in the db");
+      }
+    }
 
     
   return(
@@ -173,6 +196,7 @@ const Appointment = () => {
                       if(user.id === editing.id){
                         return editing;
                       }
+
                       else{
                         return user;
                       }
@@ -202,7 +226,9 @@ const Appointment = () => {
                   </label>
                   <Form.Item style={{width: 300}}>
                     Edit date
-                    <DatePicker showTime={true}/>
+                    <DatePicker
+                    onSelect={(current)=>onSelect(current)}
+                    showTime={{format:'HH:mm', showDisabled:false}}/>
                   </Form.Item>
                 </Form>}
                 </Card>
