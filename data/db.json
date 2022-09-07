@@ -213,6 +213,12 @@
             "Invalid date",
             "10:00"
           ]
+        },
+        {
+          "date": "2022-09-07",
+          "time": [
+            "08:00"
+          ]
         }
       ]
     },
@@ -376,6 +382,18 @@
           "time": [
             "13:40"
           ]
+        },
+        {
+          "date": "2022-09-08",
+          "time": [
+            "13:00"
+          ]
+        },
+        {
+          "date": "2022-09-11",
+          "time": [
+            "08:00"
+          ]
         }
       ]
     }
@@ -432,19 +450,6 @@
     }
   ],
   "appointments": [
-    {
-      "name": "Ybbie",
-      "second-name": "Gail",
-      "third-name": "Abby",
-      "dob": "2022-08-01",
-      "phoneNumber": 56565,
-      "clinic": "dental",
-      "doctor": "Moses Bilal",
-      "appointmentTime": "08:00",
-      "appointmentDate": "2022-08-25",
-      "room": "A02",
-      "id": 6
-    },
     {
       "name": "Mercy",
       "second-name": "Marccisist",
@@ -574,6 +579,32 @@
       "appointmentDate": "2022-09-11",
       "room": "A02",
       "id": 19
+    },
+    {
+      "name": "Abdul",
+      "second-name": "ewe",
+      "third-name": "Mahmoud",
+      "dob": "1990-06-09",
+      "phoneNumber": 983746799,
+      "clinic": "dental",
+      "doctor": "Moses Bilal",
+      "appointmentTime": "08:00",
+      "appointmentDate": "2022-09-07",
+      "room": "A02",
+      "id": 20
+    },
+    {
+      "name": "Abdul",
+      "second-name": "Ahmed",
+      "third-name": "Mahmoud",
+      "dob": "1987-09-08",
+      "phoneNumber": 784848485,
+      "clinic": "dental",
+      "doctor": "Lambda Duke",
+      "appointmentTime": "08:00",
+      "appointmentDate": "2022-09-11",
+      "room": "A01",
+      "id": 21
     }
   ],
   "clinics": [

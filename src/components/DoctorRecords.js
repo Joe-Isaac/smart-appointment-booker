@@ -97,7 +97,7 @@ const DoctorRecords = () => {
     }}
   ];
 
-  const {data, isPending, setData} = useFetch('http://192.168.2.179:8000/doctors');
+  const {data, isPending, setData} = useFetch('http://localhost:8000/doctors');
 
   return(
       <>

@@ -30,6 +30,7 @@ const Appointment = () => {
   const editUser = (record) => {
     setIsVisible(true);
     setEditing({...record});
+    console.log('This is the data that has been carried from the table', record)
   }
   
   const deleteUser = (record) => {
@@ -164,7 +165,7 @@ const Appointment = () => {
       <>
       <Modal
             visible={isVisible}
-            title={"Edit user"}
+            title={"Reschedule appointment"}
             onOk={
               () => {
                 setData(pre => {
@@ -183,29 +184,27 @@ const Appointment = () => {
             onCancel={() => setIsVisible(false)}
             closable={true}
             okText={'save'}>
+
                 <Card hoverable={true}>
-                <Form style={{textAlign: 'center', display:'flex', flexDirection:'column',
+                {editing && <Form style={{textAlign: 'center', display:'flex', flexDirection:'column',
               alignItems:'center'}}>
                   <Form.Item style={{width: 300}}>
                     Name
-                    <Input disabled/>
+                    <Input value={editing.name} disabled/>
                   </Form.Item>
-                  <Form.Item style={{width: 300}}>
-                    Age
-                    <Input disabled/>
-                  </Form.Item>
+                  
                   <Form.Item style={{width: 300}}>
                     Phone Number
-                    <Input/>
+                    <Input value={editing.phoneNumber} disabled/>
                   </Form.Item>
                   <label>
                     current date
                   </label>
                   <Form.Item style={{width: 300}}>
                     Edit date
-                    <DatePicker/>
+                    <DatePicker showTime={true}/>
                   </Form.Item>
-                </Form>
+                </Form>}
                 </Card>
             </Modal>
             <div style={{border: '1px', borderStyle: 'solid', borderColor: '#f3f3f3', width: 'fit-content', padding: '4px', backgroundColor: '#1890ff'}}><Link style={{color:'white', fontFamily: 'calibri', fontWeight:30, fontSize: 16}} to='/Booking'>Create new Appointment</Link></div>
@@ -216,6 +215,7 @@ const Appointment = () => {
                 dataSource={data} 
             />}
             {isPending && <><Spin size="large"/><p>Loading...</p></>}
+            {editing ? console.log('This is the data from the state variable', editing.name) : console.log("Waiting for editing")}
 
       </>
   )
