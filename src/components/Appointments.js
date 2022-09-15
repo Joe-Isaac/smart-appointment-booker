@@ -173,7 +173,7 @@ const Appointment = () => {
               if (date.date === moment(current).format("YYYY-MM-DD")){
                 console.log("The date is in the db");
                 setRandomTruth(true);
-                return;
+                return ;
               }
             })
         }

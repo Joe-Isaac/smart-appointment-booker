@@ -16,7 +16,7 @@ const MyList = () => {
                 size="small"
                 hoverable={true}
                 style={{
-                  boxShadow: '4px 10px 10px #f3f3f3',
+                  boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 2px -2px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px, rgba(0, 0, 0, 0.09) 0px 5px 12px 4px',
                   backgroundColor: '',
                   width: 300,
                   borderRadius: 14,
@@ -40,7 +40,7 @@ const MyList = () => {
                 size="small"
                 hoverable={true}
                 style={{
-                  boxShadow: '4px 10px 10px #f3f3f3',
+                  boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 2px -2px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px, rgba(0, 0, 0, 0.09) 0px 5px 12px 4px',
                   backgroundColor: '',
                   width: 300,
                   borderRadius: 14,
@@ -67,7 +67,7 @@ const MyList = () => {
                 size="small"
                 hoverable={true}
                 style={{
-                  boxShadow: '4px 10px 10px #f3f3f3',
+                  boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 2px -2px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px, rgba(0, 0, 0, 0.09) 0px 5px 12px 4px',
                   backgroundColor: '',
                   width: 300,
                   borderRadius: 14,
