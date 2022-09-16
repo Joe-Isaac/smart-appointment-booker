@@ -93,7 +93,7 @@ const findColor = () => {
             <Card hoverable={true}
             style={{
               border:0,
-              boxShadow: '1px 2px 1px 1px #f3f3f3',
+              boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 2px -2px, rgba(0, 0, 0, 0.12) 0px 3px 6px 0px, rgba(0, 0, 0, 0.09) 0px 5px 12px 4px',
             }}
             >
           {val.map(item =>

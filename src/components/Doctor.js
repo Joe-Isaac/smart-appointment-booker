@@ -110,8 +110,25 @@ const Doctor = () => {
             <p style={{fontSize: '25px', fontweight: 70, fontFamily:'calibri'}}>25</p>
             <p style={{fontweight: 70, fontFamily: 'calibri', fontSize: 18}}>By gender <TeamOutlined /></p>
             <div style={{display: 'flex', flexDirection: 'row'}}>
-            <Card hoverable={true} style={{margin: 5}}><p style={{fontFamily: 'calibri', fontSize: 15}}>Male: 67</p></Card>
-            <Card hoverable={true} style={{margin: 5}}><p style={{fontFamily: 'calibri', fontSize: 15}}>Female: 86</p></Card>
+
+            <Card hoverable={true} style={{margin: 5}}>
+            <p style={{
+            fontFamily: 'calibri',
+            fontSize: 15,
+            boxShadow: ''
+            }}>
+              Male: 67
+              </p>
+              </Card>
+            <Card hoverable={true} style={{margin: 5}}>
+              <p style={{
+                fontFamily: 'calibri',
+                fontSize: 15, 
+                boxShadow: ''
+                }}>
+                  Female: 86
+                </p>
+                </Card>
             </div>
             <div style={{height: 120}}>
             <MyDonut />
