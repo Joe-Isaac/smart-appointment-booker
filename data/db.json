@@ -103,6 +103,12 @@
           "time": [
             "09:20"
           ]
+        },
+        {
+          "date": "2022-10-31",
+          "time": [
+            "08:00"
+          ]
         }
       ]
     },
@@ -292,6 +298,16 @@
           "date": "2022-08-31",
           "time": [
             "12:20"
+          ]
+        },
+        {
+          "date": "2022-10-31",
+          "time": [
+            "08:00",
+            "09:00",
+            "10:00",
+            "11:20",
+            "10:20"
           ]
         }
       ]
@@ -605,6 +621,84 @@
       "appointmentDate": "2022-09-11",
       "room": "A01",
       "id": 21
+    },
+    {
+      "name": "Cristine",
+      "second-name": "Gail",
+      "third-name": "Mahmoud",
+      "dob": "1972-10-17",
+      "phoneNumber": 909090909,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "08:00",
+      "appointmentDate": "2022-10-31",
+      "room": "A04",
+      "id": 22
+    },
+    {
+      "name": "Abdul",
+      "second-name": "s",
+      "third-name": "Mahmoud",
+      "dob": "1986-10-13",
+      "phoneNumber": 5,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "09:00",
+      "appointmentDate": "2022-10-31",
+      "room": "A04",
+      "id": 23
+    },
+    {
+      "name": "Cristine",
+      "second-name": "Gail",
+      "third-name": "Mahmoud",
+      "dob": "2005-10-06",
+      "phoneNumber": 2,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "10:00",
+      "appointmentDate": "2022-10-31",
+      "room": "A02",
+      "id": 24
+    },
+    {
+      "name": "Abdul",
+      "second-name": "Gail",
+      "third-name": "Mahmoud",
+      "dob": "2011-10-04",
+      "phoneNumber": 898989,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "11:20",
+      "appointmentDate": "2022-10-31",
+      "room": "A02",
+      "id": 25
+    },
+    {
+      "name": "Cristine",
+      "second-name": "Gail",
+      "third-name": "does",
+      "dob": "1996-10-02",
+      "phoneNumber": 555656,
+      "clinic": "cardiology",
+      "doctor": "Rosebell Mohammed",
+      "appointmentTime": "10:20",
+      "appointmentDate": "2022-10-31",
+      "room": "A02",
+      "id": 26
+    },
+    {
+      "name": "Yuhu",
+      "second-name": "Krypt",
+      "third-name": "Huju",
+      "dob": "1980-09-10",
+      "phoneNumber": 787878,
+      "clinic": "surgery",
+      "doctor": "Jimmy Kimmel",
+      "appointmentTime": "08:00",
+      "appointmentDate": "2022-10-31",
+      "room": "A01",
+      "id": 27
     }
   ],
   "clinics": [

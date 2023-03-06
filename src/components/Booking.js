@@ -90,7 +90,6 @@ const SpecBooking = () => {
 
                 for(let j=0; j<data[i].unavailable.length; j++){
                     setDocDate(val => [...val, data[i].unavailable[j]])
-                    
                 }
             }
         })

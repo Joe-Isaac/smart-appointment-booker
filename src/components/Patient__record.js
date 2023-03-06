@@ -69,12 +69,14 @@ const Patientrecord = () => {
       render: (record) => {
       return <>
       <EditOutlined onClick={() => {
+        console.log("records print here", record);
         editUser(record);
       }}/>
       <DeleteOutlined onClick={() => {
         deleteUser(record);
       }
-      } style={{color: 'red', marginLeft:16,}}/>
+      } 
+      style={{color: 'red', marginLeft:16,}}/>
       </>
     }}
   ];

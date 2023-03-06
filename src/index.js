@@ -19,15 +19,15 @@ root.render(
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<App/>}>
-      <Route path="Patient__record" element={<Patientrecord />}/>
-      <Route path="Dashboard" element={<Dashboard />}/>
-      <Route path="Doctor" element={<Doctor />}/>
-      <Route path="Schedule" element={<Schedule />}/>
-      <Route path="Booking" element={<SpecBooking />}/>
-      <Route path="Appointments" element={<Appointment />}/>
-      <Route path="PatientBooking" element={<PatientBooking />}/>
-      <Route path="DoctorRecords" element={<DoctorRecords />}/>
-      <Route path="RoomAllocation" element={<RoomAllocation />}/>
+        <Route path="Patient__record" element={<Patientrecord />}/>
+        <Route path="Dashboard" element={<Dashboard />}/>
+        <Route path="Doctor" element={<Doctor />}/>
+        <Route path="Schedule" element={<Schedule />}/>
+        <Route path="Booking" element={<SpecBooking />}/>
+        <Route path="Appointments" element={<Appointment />}/>
+        <Route path="PatientBooking" element={<PatientBooking />}/>
+        <Route path="DoctorRecords" element={<DoctorRecords />}/>
+        <Route path="RoomAllocation" element={<RoomAllocation />}/>
       </Route>
     </Routes>
     </BrowserRouter>
